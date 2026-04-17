@@ -107,6 +107,7 @@ export class GameScene extends Phaser.Scene {
 
   private triggerLevelUp(): void {
     this.scene.pause();
+    this.scene.stop('LevelUpScene');
     this.scene.launch('LevelUpScene', {
       gameScene: this,
       choices: this.levelUpSystem.generateChoices(this.player, this.weaponManager, this),

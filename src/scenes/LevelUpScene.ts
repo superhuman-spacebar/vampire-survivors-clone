@@ -84,9 +84,10 @@ export class LevelUpScene extends Phaser.Scene {
 
       // Click
       card.on('pointerdown', () => {
+        if (this.scene.isPaused()) return;
         choice.apply(gameScene.player, gameScene.weaponManager, gameScene);
-        this.scene.stop();
         gameScene.scene.resume();
+        this.scene.stop();
       });
     });
   }
