@@ -37,7 +37,8 @@ export class HolyWater extends BaseWeapon {
             if (!enemy.active) continue;
             const dist = Phaser.Math.Distance.Between(x, y, enemy.x, enemy.y);
             if (dist < radius) {
-              enemy.takeDamage(damage);
+              const killed = enemy.takeDamage(damage);
+              if (killed && this.onEnemyKilled) this.onEnemyKilled(enemy);
             }
           }
         }

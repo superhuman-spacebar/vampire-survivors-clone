@@ -22,7 +22,15 @@ export class LevelUpSystem {
         type: 'new_weapon',
         name: 'Magic Missile',
         description: 'Fires at nearest enemy',
-        apply: (_p, wm, s) => wm.addWeapon(new MagicMissile(s)),
+        apply: (_p, wm, s) => {
+          const missile = new MagicMissile(s);
+          wm.addWeapon(missile);
+          // Register projectile collision via GameScene
+          const gameScene = s as { addProjectileCollision?: (group: Phaser.Physics.Arcade.Group) => void };
+          if (gameScene.addProjectileCollision) {
+            gameScene.addProjectileCollision(missile.getProjectileGroup());
+          }
+        },
       });
     }
     if (!ownedNames.includes('Whip')) {

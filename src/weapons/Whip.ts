@@ -37,7 +37,8 @@ export class Whip extends BaseWeapon {
       const localY = dx * sin + dy * cos;
 
       if (Math.abs(localX) < hitWidth / 2 + 12 && Math.abs(localY) < hitHeight / 2 + 12) {
-        enemy.takeDamage(this.damage);
+        const killed = enemy.takeDamage(this.damage);
+        if (killed && this.onEnemyKilled) this.onEnemyKilled(enemy);
       }
     }
 

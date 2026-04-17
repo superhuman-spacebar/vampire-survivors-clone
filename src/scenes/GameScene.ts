@@ -3,7 +3,7 @@ import { Player } from '../entities/Player';
 import { Enemy } from '../entities/Enemy';
 import { ExperienceGem } from '../entities/ExperienceGem';
 import { WeaponManager } from '../weapons/WeaponManager';
-import { MagicMissile } from '../weapons/MagicMissile';
+import { Whip } from '../weapons/Whip';
 import { EnemySpawner } from '../systems/EnemySpawner';
 import { LevelUpSystem } from '../systems/LevelUpSystem';
 import { BackgroundScroller } from '../systems/BackgroundScroller';
@@ -46,44 +46,21 @@ export class GameScene extends Phaser.Scene {
 
     // Weapons
     this.weaponManager = new WeaponManager();
-    const missile = new MagicMissile(this);
-    this.weaponManager.addWeapon(missile);
+    this.weaponManager.onEnemyKilled = (enemy) => this.onEnemyKilled(enemy as Enemy);
+    this.weaponManager.addWeapon(new Whip());
 
     // Level up system
     this.levelUpSystem = new LevelUpSystem();
 
     // Collisions
-    this.setupCollisions(missile);
+    this.setupCollisions();
 
     // Launch HUD
     this.scene.launch('HUDScene', { gameScene: this });
   }
 
-  private setupCollisions(missile: MagicMissile): void {
+  private setupCollisions(): void {
     const enemyGroup = this.enemySpawner.getEnemyGroup();
-
-    // Projectile vs Enemy
-    this.physics.add.overlap(
-      missile.getProjectileGroup(),
-      enemyGroup,
-      (proj, enemy) => {
-        const projectile = proj as Phaser.Physics.Arcade.Sprite;
-        const e = enemy as Enemy;
-        if (!projectile.active || !e.active) return;
-
-        const damage = projectile.getData('damage') as number;
-        const killed = e.takeDamage(damage);
-
-        projectile.setActive(false).setVisible(false);
-        if (projectile.body) {
-          (projectile.body as Phaser.Physics.Arcade.Body).enable = false;
-        }
-
-        if (killed) {
-          this.onEnemyKilled(e);
-        }
-      },
-    );
 
     // Enemy vs Player
     this.physics.add.overlap(

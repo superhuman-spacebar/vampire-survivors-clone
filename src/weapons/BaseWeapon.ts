@@ -7,6 +7,7 @@ export abstract class BaseWeapon {
   level = 1;
   damage: number;
   cooldown: number;
+  onEnemyKilled?: (enemy: Phaser.Physics.Arcade.Sprite) => void;
   private fireTimer = 0;
 
   constructor(name: string, description: string, damage: number, cooldown: number) {

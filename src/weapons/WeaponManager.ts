@@ -4,8 +4,12 @@ import { Player } from '../entities/Player';
 
 export class WeaponManager {
   weapons: BaseWeapon[] = [];
+  onEnemyKilled?: (enemy: Phaser.Physics.Arcade.Sprite) => void;
 
   addWeapon(weapon: BaseWeapon): void {
+    if (this.onEnemyKilled) {
+      weapon.onEnemyKilled = this.onEnemyKilled;
+    }
     this.weapons.push(weapon);
   }
 
