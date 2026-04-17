@@ -55,6 +55,25 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
       if (this.active) this.clearTint();
     });
 
+    // Damage number popup
+    const isCrit = this.hp <= 0;
+    const txt = this.scene.add.text(this.x, this.y - 10, `${amount}`, {
+      fontFamily: 'monospace',
+      fontSize: isCrit ? '16px' : '12px',
+      color: isCrit ? '#ff4444' : '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 2,
+    }).setOrigin(0.5).setDepth(50);
+
+    this.scene.tweens.add({
+      targets: txt,
+      y: txt.y - 30,
+      alpha: 0,
+      duration: 600,
+      ease: 'Power2',
+      onComplete: () => txt.destroy(),
+    });
+
     if (this.hp <= 0) {
       this.die();
       return true;
