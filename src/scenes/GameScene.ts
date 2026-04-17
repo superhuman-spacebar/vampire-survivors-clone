@@ -105,13 +105,13 @@ export class GameScene extends Phaser.Scene {
     gem.spawn(x, y, value);
   }
 
-  private triggerLevelUp(): void {
+  triggerLevelUp(): void {
+    if (this.scene.isPaused()) return;
     this.scene.pause();
-    this.scene.stop('LevelUpScene');
-    this.scene.launch('LevelUpScene', {
-      gameScene: this,
-      choices: this.levelUpSystem.generateChoices(this.player, this.weaponManager, this),
-    });
+    const hudScene = this.scene.get('HUDScene') as import('./HUDScene').HUDScene;
+    hudScene.showLevelUp(
+      this.levelUpSystem.generateChoices(this.player, this.weaponManager, this),
+    );
   }
 
   update(time: number, delta: number): void {
