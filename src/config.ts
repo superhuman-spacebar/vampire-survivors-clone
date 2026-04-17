@@ -1,0 +1,66 @@
+export const GAME_WIDTH = 1024;
+export const GAME_HEIGHT = 768;
+
+export const PLAYER = {
+  SPEED: 200,
+  MAX_HP: 100,
+  INVINCIBILITY_DURATION: 1000,
+  MAGNET_RANGE: 100,
+};
+
+export const ENEMY = {
+  BASE_SPEED: 60,
+  BASE_HP: 3,
+  CONTACT_DAMAGE: 10,
+  SPAWN_RADIUS: 600,
+  SPAWN_INTERVAL_BASE: 1000,
+  SPAWN_INTERVAL_MIN: 200,
+  MAX_COUNT: 300,
+  XP_VALUE: 1,
+  HP_SCALING: 0.1,
+  SPEED_SCALING: 0.02,
+};
+
+export const WEAPONS = {
+  MAGIC_MISSILE: {
+    DAMAGE: 10,
+    COOLDOWN: 1200,
+    SPEED: 350,
+    PROJECTILE_SIZE: 6,
+  },
+  WHIP: {
+    DAMAGE: 15,
+    COOLDOWN: 1500,
+    WIDTH: 80,
+    HEIGHT: 20,
+    DURATION: 200,
+  },
+  HOLY_WATER: {
+    DAMAGE: 5,
+    COOLDOWN: 3000,
+    RADIUS: 40,
+    DURATION: 2000,
+    TICK_INTERVAL: 300,
+  },
+};
+
+export const XP = {
+  BASE_THRESHOLD: 10,
+  SCALING_FACTOR: 5,
+};
+
+export const COLORS = {
+  PLAYER: 0x4488ff,
+  ENEMY: 0xff4444,
+  ENEMY_FAST: 0xff8800,
+  ENEMY_BIG: 0xcc0000,
+  PROJECTILE: 0xffff44,
+  GEM: 0x44ff88,
+  WHIP: 0xffffff,
+  HOLY_WATER: 0x4488ff,
+  GROUND: 0x2a2a2a,
+  GROUND_LINE: 0x333333,
+  HP_BAR: 0x44ff44,
+  HP_BAR_BG: 0x444444,
+  XP_BAR: 0x44aaff,
+};
