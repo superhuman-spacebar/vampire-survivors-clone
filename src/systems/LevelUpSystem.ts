@@ -1,3 +1,4 @@
+import * as Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { WeaponManager } from '../weapons/WeaponManager';
 import { MagicMissile } from '../weapons/MagicMissile';
