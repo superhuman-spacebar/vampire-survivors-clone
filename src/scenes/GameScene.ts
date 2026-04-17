@@ -108,10 +108,9 @@ export class GameScene extends Phaser.Scene {
   triggerLevelUp(): void {
     if (this.scene.isPaused()) return;
     this.scene.pause();
+    const choices = this.levelUpSystem.generateChoices(this.player, this.weaponManager, this);
     const hudScene = this.scene.get('HUDScene') as import('./HUDScene').HUDScene;
-    hudScene.showLevelUp(
-      this.levelUpSystem.generateChoices(this.player, this.weaponManager, this),
-    );
+    hudScene.showLevelUp(choices);
   }
 
   update(time: number, delta: number): void {
