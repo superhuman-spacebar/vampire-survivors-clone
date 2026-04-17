@@ -17,6 +17,14 @@ export class WeaponManager {
     return this.weapons.find(w => w.name === name);
   }
 
+  removeWeapon(name: string): void {
+    this.weapons = this.weapons.filter(w => w.name !== name);
+  }
+
+  hasWeapon(name: string): boolean {
+    return this.weapons.some(w => w.name === name);
+  }
+
   update(time: number, delta: number, scene: Phaser.Scene, player: Player, enemies: Phaser.Physics.Arcade.Group): void {
     for (const weapon of this.weapons) {
       weapon.update(time, delta, scene, player, enemies);
