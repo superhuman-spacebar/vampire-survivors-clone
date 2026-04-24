@@ -34,7 +34,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setAlpha(1);
 
     if (this.body) {
-      (this.body as Phaser.Physics.Arcade.Body).enable = true;
+      const body = this.body as Phaser.Physics.Arcade.Body;
+      body.enable = true;
+      // Circle collider sized to texture for enemy-enemy separation
+      const r = Math.max(this.width, this.height) / 2;
+      this.setCircle(r, (this.width / 2) - r, (this.height / 2) - r);
     }
   }
 

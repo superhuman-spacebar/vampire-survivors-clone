@@ -20,6 +20,9 @@ export class EnemySpawner {
       runChildUpdate: false,
     });
 
+    // Enemies collide with each other so they don't stack
+    scene.physics.add.collider(this.enemyGroup, this.enemyGroup);
+
     // Pre-populate pool
     for (let i = 0; i < 50; i++) {
       const enemy = new Enemy(scene, -1000, -1000, 'enemy');
