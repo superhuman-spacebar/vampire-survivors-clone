@@ -36,8 +36,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     if (this.body) {
       const body = this.body as Phaser.Physics.Arcade.Body;
       body.enable = true;
-      // Circle collider sized to texture for enemy-enemy separation
-      const r = Math.max(this.width, this.height) / 2;
+      // Circle collider slightly smaller than sprite
+      const r = Math.max(this.width, this.height) * 0.35;
       this.setCircle(r, (this.width / 2) - r, (this.height / 2) - r);
     }
   }
