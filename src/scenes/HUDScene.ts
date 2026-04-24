@@ -174,7 +174,9 @@ export class HUDScene extends Phaser.Scene {
     const sectionGap = 14;
     const weaponSectionH = ALL_WEAPONS.length * (btnH + 6);
     const xpSectionH = headerH + 2 * (btnH + 6);
-    const panelH = headerH + padding + weaponSectionH + sectionGap + xpSectionH + padding;
+    const enemyTypes = ['Normal', 'Fast', 'Big'] as const;
+    const enemySectionH = headerH + enemyTypes.length * (btnH + 6);
+    const panelH = headerH + padding + weaponSectionH + sectionGap + xpSectionH + sectionGap + enemySectionH + padding;
     const panelX = 10;
     const panelY = GAME_HEIGHT - panelH - 10;
 
@@ -220,6 +222,22 @@ export class HUDScene extends Phaser.Scene {
       const needed = p.getXPThreshold() - p.xp;
       p.addXP(needed);
       this.gameScene.triggerLevelUp();
+    });
+
+    // --- Enemy spawn section ---
+    const enemyTop = row2Y + btnH + 6 + sectionGap;
+    const enemyHeader = this.add.text(panelW / 2, enemyTop, 'Spawn Enemy', {
+      fontFamily: 'monospace', fontSize: '11px', color: '#ffaa00',
+    }).setOrigin(0.5, 0);
+    this.debugContainer.add(enemyHeader);
+
+    const enemyColors: Record<string, number> = { Normal: 0x663333, Fast: 0x664422, Big: 0x662222 };
+    enemyTypes.forEach((type, i) => {
+      const btnY = enemyTop + headerH + i * (btnH + 6);
+      const spawnType = type.toLowerCase() as 'normal' | 'fast' | 'big';
+      this.makeButton(panelW, padding, btnH, btnY, `+ ${type}`, enemyColors[type], () => {
+        this.gameScene.enemySpawner.spawnByType(spawnType);
+      });
     });
   }
 

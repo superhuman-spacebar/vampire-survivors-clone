@@ -63,48 +63,62 @@ export class EnemySpawner {
   private spawnOne(): void {
     const pos = this.getSpawnPosition();
     const config = this.getEnemyConfig();
+    this.spawnWithConfig(pos.x, pos.y, config);
+  }
 
+  private spawnWithConfig(x: number, y: number, config: EnemyConfig): void {
     let enemy = this.enemyGroup.getFirstDead(false) as Enemy | null;
     if (!enemy) {
-      enemy = new Enemy(this.scene, pos.x, pos.y, config.texture);
+      enemy = new Enemy(this.scene, x, y, config.texture);
       this.scene.add.existing(enemy);
       this.scene.physics.add.existing(enemy);
       this.enemyGroup.add(enemy);
     }
-    enemy.spawn(pos.x, pos.y, config, this.player);
+    enemy.spawn(x, y, config, this.player);
+  }
+
+  spawnByType(type: 'normal' | 'fast' | 'big'): void {
+    const pos = this.getSpawnPosition();
+    const config = this.getConfigByType(type);
+    this.spawnWithConfig(pos.x, pos.y, config);
+  }
+
+  getConfigByType(type: 'normal' | 'fast' | 'big'): EnemyConfig {
+    const minutes = this.gameTime / 60000;
+    switch (type) {
+      case 'fast':
+        return {
+          texture: 'enemy_fast',
+          hp: Math.floor(ENEMY.BASE_HP * 0.6 * (1 + minutes * ENEMY.HP_SCALING)),
+          speed: ENEMY.BASE_SPEED * 1.8 * (1 + minutes * ENEMY.SPEED_SCALING),
+          damage: ENEMY.CONTACT_DAMAGE * 0.7,
+          xpValue: ENEMY.XP_VALUE,
+        };
+      case 'big':
+        return {
+          texture: 'enemy_big',
+          hp: Math.floor((ENEMY.BASE_HP * 3) * (1 + minutes * ENEMY.HP_SCALING)),
+          speed: ENEMY.BASE_SPEED * 0.6,
+          damage: ENEMY.CONTACT_DAMAGE * 2,
+          xpValue: ENEMY.XP_VALUE * 3,
+        };
+      default:
+        return {
+          texture: 'enemy',
+          hp: Math.floor(ENEMY.BASE_HP * (1 + minutes * ENEMY.HP_SCALING)),
+          speed: ENEMY.BASE_SPEED * (1 + minutes * ENEMY.SPEED_SCALING),
+          damage: ENEMY.CONTACT_DAMAGE,
+          xpValue: ENEMY.XP_VALUE,
+        };
+    }
   }
 
   private getEnemyConfig(): EnemyConfig {
-    const minutes = this.gameTime / 60000;
     const roll = Math.random();
-
-    if (minutes >= 3 && roll < 0.1) {
-      return {
-        texture: 'enemy_big',
-        hp: Math.floor((ENEMY.BASE_HP * 3) * (1 + minutes * ENEMY.HP_SCALING)),
-        speed: ENEMY.BASE_SPEED * 0.6,
-        damage: ENEMY.CONTACT_DAMAGE * 2,
-        xpValue: ENEMY.XP_VALUE * 3,
-      };
-    }
-
-    if (minutes >= 1 && roll < 0.3) {
-      return {
-        texture: 'enemy_fast',
-        hp: Math.floor(ENEMY.BASE_HP * 0.6 * (1 + minutes * ENEMY.HP_SCALING)),
-        speed: ENEMY.BASE_SPEED * 1.8 * (1 + minutes * ENEMY.SPEED_SCALING),
-        damage: ENEMY.CONTACT_DAMAGE * 0.7,
-        xpValue: ENEMY.XP_VALUE,
-      };
-    }
-
-    return {
-      texture: 'enemy',
-      hp: Math.floor(ENEMY.BASE_HP * (1 + minutes * ENEMY.HP_SCALING)),
-      speed: ENEMY.BASE_SPEED * (1 + minutes * ENEMY.SPEED_SCALING),
-      damage: ENEMY.CONTACT_DAMAGE,
-      xpValue: ENEMY.XP_VALUE,
-    };
+    const minutes = this.gameTime / 60000;
+    if (minutes >= 3 && roll < 0.1) return this.getConfigByType('big');
+    if (minutes >= 1 && roll < 0.3) return this.getConfigByType('fast');
+    return this.getConfigByType('normal');
   }
 
   private getSpawnPosition(): { x: number; y: number } {
