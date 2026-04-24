@@ -55,6 +55,11 @@ export class GameScene extends Phaser.Scene {
     // Collisions
     this.setupCollisions();
 
+    // Prepare debug graphics (off by default, toggled from HUD)
+    this.physics.world.createDebugGraphic();
+    this.physics.world.drawDebug = false;
+    this.physics.world.debugGraphic.clear();
+
     // Launch HUD
     this.scene.launch('HUDScene', { gameScene: this });
   }

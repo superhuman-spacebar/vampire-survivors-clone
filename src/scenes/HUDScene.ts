@@ -176,7 +176,8 @@ export class HUDScene extends Phaser.Scene {
     const xpSectionH = headerH + 2 * (btnH + 6);
     const enemyTypes = ['Normal', 'Fast', 'Big'] as const;
     const enemySectionH = headerH + enemyTypes.length * (btnH + 6);
-    const panelH = headerH + padding + weaponSectionH + sectionGap + xpSectionH + sectionGap + enemySectionH + padding;
+    const miscSectionH = headerH + (btnH + 6);
+    const panelH = headerH + padding + weaponSectionH + sectionGap + xpSectionH + sectionGap + enemySectionH + sectionGap + miscSectionH + padding;
     const panelX = 10;
     const panelY = GAME_HEIGHT - panelH - 10;
 
@@ -238,6 +239,27 @@ export class HUDScene extends Phaser.Scene {
       this.makeButton(panelW, padding, btnH, btnY, `+ ${type}`, enemyColors[type], () => {
         this.gameScene.enemySpawner.spawnByType(spawnType);
       });
+    });
+
+    // --- Misc section ---
+    const lastEnemyBtnY = enemyTop + headerH + (enemyTypes.length - 1) * (btnH + 6);
+    const miscTop = lastEnemyBtnY + btnH + 6 + sectionGap;
+    const miscHeader = this.add.text(panelW / 2, miscTop, 'Display', {
+      fontFamily: 'monospace', fontSize: '11px', color: '#ffaa00',
+    }).setOrigin(0.5, 0);
+    this.debugContainer.add(miscHeader);
+
+    const colliderBtnY = miscTop + headerH;
+    const colliderBtn = this.makeButton(panelW, padding, btnH, colliderBtnY, 'Colliders: OFF', 0x333333, () => {
+      const world = this.gameScene.physics.world;
+      world.drawDebug = !world.drawDebug;
+      if (!world.drawDebug) {
+        world.debugGraphic.clear();
+      }
+      const on = world.drawDebug;
+      colliderBtn.bg.setFillStyle(on ? 0x224422 : 0x333333, 0.9);
+      colliderBtn.label.setColor(on ? '#44ff44' : '#ffffff');
+      colliderBtn.label.setText(on ? 'Colliders: ON' : 'Colliders: OFF');
     });
   }
 
