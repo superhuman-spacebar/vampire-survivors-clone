@@ -21,29 +21,6 @@ export const ENEMY = {
   SPEED_SCALING: 0.02,
 };
 
-export const WEAPONS = {
-  MAGIC_MISSILE: {
-    DAMAGE: 10,
-    COOLDOWN: 1200,
-    SPEED: 350,
-    PROJECTILE_SIZE: 6,
-  },
-  WHIP: {
-    DAMAGE: 15,
-    COOLDOWN: 1500,
-    WIDTH: 80,
-    HEIGHT: 20,
-    DURATION: 200,
-  },
-  HOLY_WATER: {
-    DAMAGE: 5,
-    COOLDOWN: 3000,
-    RADIUS: 40,
-    DURATION: 2000,
-    TICK_INTERVAL: 300,
-  },
-};
-
 export const XP = {
   BASE_THRESHOLD: 10,
   SCALING_FACTOR: 5,

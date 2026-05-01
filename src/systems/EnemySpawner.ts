@@ -9,10 +9,12 @@ export class EnemySpawner {
   private player: Player;
   private spawnTimer = 0;
   private gameTime = 0;
+  private onEnemyDied?: (enemy: Enemy) => void;
 
-  constructor(scene: Phaser.Scene, player: Player) {
+  constructor(scene: Phaser.Scene, player: Player, onEnemyDied?: (enemy: Enemy) => void) {
     this.scene = scene;
     this.player = player;
+    this.onEnemyDied = onEnemyDied;
 
     this.enemyGroup = scene.physics.add.group({
       classType: Enemy,
@@ -32,6 +34,7 @@ export class EnemySpawner {
       if (enemy.body) {
         (enemy.body as Phaser.Physics.Arcade.Body).enable = false;
       }
+      enemy.onDeathCallback = this.onEnemyDied;
       this.enemyGroup.add(enemy);
     }
   }
@@ -75,6 +78,7 @@ export class EnemySpawner {
       this.enemyGroup.add(enemy);
     }
     enemy.spawn(x, y, config, this.player);
+    enemy.onDeathCallback = this.onEnemyDied;
   }
 
   spawnByType(type: 'normal' | 'fast' | 'big'): void {

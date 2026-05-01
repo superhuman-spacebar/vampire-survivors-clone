@@ -1,9 +1,8 @@
 import * as Phaser from 'phaser';
 import { Player } from '../entities/Player';
 import { WeaponManager } from '../weapons/WeaponManager';
-import { MagicMissile } from '../weapons/MagicMissile';
-import { Whip } from '../weapons/Whip';
-import { HolyWater } from '../weapons/HolyWater';
+import { Weapon } from '../weapons/Weapon';
+import { WEAPON_DEFS } from '../weapons/WeaponDefs';
 
 export interface Upgrade {
   type: 'new_weapon' | 'upgrade_weapon' | 'stat_boost';
@@ -17,38 +16,18 @@ export class LevelUpSystem {
     const pool: Upgrade[] = [];
     const ownedNames = weaponManager.getWeaponNames();
 
-    // New weapons
-    if (!ownedNames.includes('Magic Missile')) {
-      pool.push({
-        type: 'new_weapon',
-        name: 'Magic Missile',
-        description: 'Fires at nearest enemy',
-        apply: (_p, wm, s) => {
-          const missile = new MagicMissile(s);
-          wm.addWeapon(missile);
-          // Register projectile collision via GameScene
-          const gameScene = s as { addProjectileCollision?: (group: Phaser.Physics.Arcade.Group) => void };
-          if (gameScene.addProjectileCollision) {
-            gameScene.addProjectileCollision(missile.getProjectileGroup());
-          }
-        },
-      });
-    }
-    if (!ownedNames.includes('Whip')) {
-      pool.push({
-        type: 'new_weapon',
-        name: 'Whip',
-        description: 'Slashes in front of you',
-        apply: (_p, wm) => wm.addWeapon(new Whip()),
-      });
-    }
-    if (!ownedNames.includes('Holy Water')) {
-      pool.push({
-        type: 'new_weapon',
-        name: 'Holy Water',
-        description: 'Damaging pool on the ground',
-        apply: (_p, wm) => wm.addWeapon(new HolyWater()),
-      });
+    // New weapons from WEAPON_DEFS
+    for (const def of WEAPON_DEFS) {
+      if (!ownedNames.includes(def.name)) {
+        pool.push({
+          type: 'new_weapon',
+          name: def.name,
+          description: def.description,
+          apply: (_p, wm, s) => {
+            wm.addWeapon(new Weapon(def, s));
+          },
+        });
+      }
     }
 
     // Weapon upgrades

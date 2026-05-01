@@ -3,7 +3,10 @@ import { Player } from '../entities/Player';
 import { Enemy } from '../entities/Enemy';
 import { ExperienceGem } from '../entities/ExperienceGem';
 import { WeaponManager } from '../weapons/WeaponManager';
-import { Whip } from '../weapons/Whip';
+import { Weapon } from '../weapons/Weapon';
+import { WEAPON_DEFS } from '../weapons/WeaponDefs';
+import { applyDamage } from '../weapons/DamageSystem';
+import { updateStatusEffects } from '../weapons/DamageSystem';
 import { EnemySpawner } from '../systems/EnemySpawner';
 import { LevelUpSystem } from '../systems/LevelUpSystem';
 import { BackgroundScroller } from '../systems/BackgroundScroller';
@@ -41,13 +44,16 @@ export class GameScene extends Phaser.Scene {
       runChildUpdate: false,
     });
 
-    // Enemy spawner
-    this.enemySpawner = new EnemySpawner(this, this.player);
+    // Enemy spawner (with death callback for XP gems)
+    this.enemySpawner = new EnemySpawner(this, this.player, (enemy) => this.onEnemyKilled(enemy));
 
     // Weapons
     this.weaponManager = new WeaponManager();
-    this.weaponManager.onEnemyKilled = (enemy) => this.onEnemyKilled(enemy as Enemy);
-    this.weaponManager.addWeapon(new Whip());
+    this.weaponManager.onProjectileGroupCreated = (group) => this.addProjectileCollision(group);
+
+    // Start with Whip
+    const whipDef = WEAPON_DEFS.find(d => d.id === 'whip')!;
+    this.weaponManager.addWeapon(new Weapon(whipDef, this));
 
     // Level up system
     this.levelUpSystem = new LevelUpSystem();
@@ -148,16 +154,19 @@ export class GameScene extends Phaser.Scene {
       });
     }
 
-    // Update enemy preUpdate (since runChildUpdate is off)
+    // Update enemy status effects and movement
     for (const child of this.enemySpawner.getEnemyGroup().getChildren()) {
       const enemy = child as Enemy;
       if (enemy.active) {
-        enemy.preUpdate(time, delta);
+        updateStatusEffects(enemy, delta);
+        if (enemy.active) {
+          enemy.preUpdate(time, delta);
+        }
       }
     }
   }
 
-  // Called when a new weapon with projectiles is added
+  // Called when a weapon with projectiles is added
   addProjectileCollision(group: Phaser.Physics.Arcade.Group): void {
     const enemyGroup = this.enemySpawner.getEnemyGroup();
     this.physics.add.overlap(
@@ -168,16 +177,24 @@ export class GameScene extends Phaser.Scene {
         const e = enemy as Enemy;
         if (!projectile.active || !e.active) return;
 
+        const weapon = projectile.getData('weapon') as Weapon;
         const damage = projectile.getData('damage') as number;
-        const killed = e.takeDamage(damage);
+
+        applyDamage({
+          scene: this,
+          target: e,
+          damage,
+          sourceX: projectile.x,
+          sourceY: projectile.y,
+          effects: weapon?.def.effects,
+          weapon,
+          player: this.player,
+          enemies: enemyGroup,
+        });
 
         projectile.setActive(false).setVisible(false);
         if (projectile.body) {
           (projectile.body as Phaser.Physics.Arcade.Body).enable = false;
-        }
-
-        if (killed) {
-          this.onEnemyKilled(e);
         }
       },
     );

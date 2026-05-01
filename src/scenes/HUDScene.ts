@@ -1,27 +1,9 @@
 import * as Phaser from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT, COLORS } from '../config';
 import { GameScene } from './GameScene';
-import { MagicMissile } from '../weapons/MagicMissile';
-import { Whip } from '../weapons/Whip';
-import { HolyWater } from '../weapons/HolyWater';
+import { Weapon } from '../weapons/Weapon';
+import { WEAPON_DEFS, WeaponDef } from '../weapons/WeaponDefs';
 import { Upgrade } from '../systems/LevelUpSystem';
-
-interface WeaponDef {
-  name: string;
-  create: (scene: Phaser.Scene) => { weapon: import('../weapons/BaseWeapon').BaseWeapon; projectileGroup?: Phaser.Physics.Arcade.Group };
-}
-
-const ALL_WEAPONS: WeaponDef[] = [
-  { name: 'Whip', create: () => ({ weapon: new Whip() }) },
-  {
-    name: 'Magic Missile',
-    create: (scene) => {
-      const m = new MagicMissile(scene);
-      return { weapon: m, projectileGroup: m.getProjectileGroup() };
-    },
-  },
-  { name: 'Holy Water', create: () => ({ weapon: new HolyWater() }) },
-];
 
 export class HUDScene extends Phaser.Scene {
   private gameScene!: GameScene;
@@ -172,7 +154,7 @@ export class HUDScene extends Phaser.Scene {
     const padding = 8;
     const headerH = 24;
     const sectionGap = 14;
-    const weaponSectionH = ALL_WEAPONS.length * (btnH + 6);
+    const weaponSectionH = WEAPON_DEFS.length * (btnH + 6);
     const xpSectionH = headerH + 2 * (btnH + 6);
     const enemyTypes = ['Normal', 'Fast', 'Big'] as const;
     const enemySectionH = headerH + enemyTypes.length * (btnH + 6);
@@ -198,7 +180,7 @@ export class HUDScene extends Phaser.Scene {
     this.debugContainer.add(weaponHeader);
 
     this.weaponButtons = [];
-    ALL_WEAPONS.forEach((def, i) => {
+    WEAPON_DEFS.forEach((def, i) => {
       const btnY = headerH + padding + i * (btnH + 6);
       const { bg, label } = this.makeButton(panelW, padding, btnH, btnY, def.name, 0x333333, () => this.toggleWeapon(def));
       this.weaponButtons.push({ bg, label, def });
@@ -268,11 +250,7 @@ export class HUDScene extends Phaser.Scene {
     if (wm.hasWeapon(def.name)) {
       wm.removeWeapon(def.name);
     } else {
-      const { weapon, projectileGroup } = def.create(this.gameScene);
-      wm.addWeapon(weapon);
-      if (projectileGroup) {
-        this.gameScene.addProjectileCollision(projectileGroup);
-      }
+      wm.addWeapon(new Weapon(def, this.gameScene));
     }
   }
 

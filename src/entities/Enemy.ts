@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import type { ActiveEffect } from '../weapons/WeaponDefs';
 
 export interface EnemyConfig {
   hp: number;
@@ -14,6 +15,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
   speed = 0;
   contactDamage = 0;
   xpValue = 0;
+  activeEffects: ActiveEffect[] = [];
+  speedMultiplier = 1;
+  onDeathCallback?: (enemy: Enemy) => void;
   private target: Phaser.Physics.Arcade.Sprite | null = null;
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string) {
@@ -32,11 +36,13 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.xpValue = config.xpValue;
     this.target = target;
     this.setAlpha(1);
+    this.clearTint();
+    this.activeEffects = [];
+    this.speedMultiplier = 1;
 
     if (this.body) {
       const body = this.body as Phaser.Physics.Arcade.Body;
       body.enable = true;
-      // Circle collider slightly smaller than sprite
       const r = Math.max(this.width, this.height) * 0.35;
       this.setCircle(r, (this.width / 2) - r, (this.height / 2) - r);
     }
@@ -48,7 +54,8 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     if (!this.active || !this.target) return;
 
     const angle = Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y);
-    this.setVelocity(Math.cos(angle) * this.speed, Math.sin(angle) * this.speed);
+    const effectiveSpeed = this.speed * this.speedMultiplier;
+    this.setVelocity(Math.cos(angle) * effectiveSpeed, Math.sin(angle) * effectiveSpeed);
   }
 
   takeDamage(amount: number): boolean {
@@ -89,8 +96,11 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
     this.setActive(false);
     this.setVisible(false);
     this.setVelocity(0, 0);
+    this.activeEffects = [];
+    this.speedMultiplier = 1;
     if (this.body) {
       (this.body as Phaser.Physics.Arcade.Body).enable = false;
     }
+    this.onDeathCallback?.(this);
   }
 }

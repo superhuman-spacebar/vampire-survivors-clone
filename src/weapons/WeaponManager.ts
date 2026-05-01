@@ -1,19 +1,19 @@
 import * as Phaser from 'phaser';
-import { BaseWeapon } from './BaseWeapon';
+import { Weapon } from './Weapon';
 import { Player } from '../entities/Player';
 
 export class WeaponManager {
-  weapons: BaseWeapon[] = [];
-  onEnemyKilled?: (enemy: Phaser.Physics.Arcade.Sprite) => void;
+  weapons: Weapon[] = [];
+  onProjectileGroupCreated?: (group: Phaser.Physics.Arcade.Group) => void;
 
-  addWeapon(weapon: BaseWeapon): void {
-    if (this.onEnemyKilled) {
-      weapon.onEnemyKilled = this.onEnemyKilled;
-    }
+  addWeapon(weapon: Weapon): void {
     this.weapons.push(weapon);
+    if (weapon.projectileGroup && this.onProjectileGroupCreated) {
+      this.onProjectileGroupCreated(weapon.projectileGroup);
+    }
   }
 
-  getWeapon(name: string): BaseWeapon | undefined {
+  getWeapon(name: string): Weapon | undefined {
     return this.weapons.find(w => w.name === name);
   }
 
