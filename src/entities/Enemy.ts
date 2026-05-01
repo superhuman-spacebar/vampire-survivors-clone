@@ -53,6 +53,9 @@ export class Enemy extends Phaser.Physics.Arcade.Sprite {
 
     if (!this.active || !this.target) return;
 
+    // Don't override velocity during knockback
+    if (this.activeEffects.some(e => e.type === 'knockback' && e.remaining > 0)) return;
+
     const angle = Phaser.Math.Angle.Between(this.x, this.y, this.target.x, this.target.y);
     const effectiveSpeed = this.speed * this.speedMultiplier;
     this.setVelocity(Math.cos(angle) * effectiveSpeed, Math.sin(angle) * effectiveSpeed);

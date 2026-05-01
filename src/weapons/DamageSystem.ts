@@ -87,7 +87,7 @@ export function applyStatusEffect(
         force: effectDef.force,
         sourceX,
         sourceY,
-        remaining: 200,
+        remaining: 300,
         applied: false,
       });
       break;
