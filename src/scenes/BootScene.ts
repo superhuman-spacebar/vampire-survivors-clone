@@ -20,7 +20,7 @@ export class BootScene extends Phaser.Scene {
     this.generateFrostZoneTexture();
     this.generateGroundTextures();
 
-    this.scene.start('GameScene');
+    this.scene.start(this.registry.get('nextScene') ?? 'GameScene');
   }
 
   private generatePlayerTexture(): void {

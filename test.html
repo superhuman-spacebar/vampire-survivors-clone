@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weapon Test Arena</title>
+<style>
+  :root { --bg:#0d1117; --panel:#161b22; --surface:#21262d; --border:#30363d; --text:#e6edf3; --text2:#8b949e; --accent:#58a6ff; --green:#3fb950; --red:#f85149; --orange:#d29922; --purple:#bc8cff; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); overflow:hidden; height:100vh; }
+
+  .layout { display:flex; flex-direction:column; height:100vh; }
+  header { display:flex; align-items:center; gap:16px; padding:10px 20px; background:var(--panel); border-bottom:1px solid var(--border); flex-shrink:0; }
+  header h1 { font-size:18px; font-weight:700; }
+  header .hint { font-size:12px; color:var(--text2); }
+
+  .main { display:flex; flex:1; min-height:0; }
+
+  /* Panels */
+  .panel { width:280px; flex-shrink:0; background:var(--panel); border-right:1px solid var(--border); overflow-y:auto; padding:12px; }
+  .panel:last-child { border-right:none; border-left:1px solid var(--border); width:240px; }
+  .panel h3 { font-size:12px; font-weight:700; color:var(--orange); text-transform:uppercase; letter-spacing:1px; margin:16px 0 8px; }
+  .panel h3:first-child { margin-top:4px; }
+  .panel section { margin-bottom:8px; }
+
+  /* Game area */
+  #game-container { flex:1; min-width:0; background:#000; display:flex; align-items:center; justify-content:center; }
+  #game-container canvas { display:block; }
+
+  /* Buttons */
+  button { font-family:inherit; font-size:12px; cursor:pointer; border:1px solid var(--border); border-radius:6px; padding:6px 10px; background:var(--surface); color:var(--text); transition:.15s; }
+  button:hover { border-color:var(--accent); color:var(--accent); }
+
+  .weapon-btn { display:block; width:100%; margin-bottom:4px; text-align:left; }
+  .weapon-btn.active { background:rgba(63,185,80,.12); border-color:var(--green); color:var(--green); }
+
+  .spawn-btn { flex:1; }
+  .btn-row { display:flex; gap:4px; margin:6px 0; }
+  .action-btn { display:block; width:100%; margin:4px 0; background:rgba(88,166,255,.08); }
+  .danger-btn { display:block; width:100%; margin:4px 0; background:rgba(248,81,73,.08); border-color:rgba(248,81,73,.3); color:var(--red); }
+  .danger-btn:hover { border-color:var(--red); }
+  .toggle-btn { display:block; width:100%; margin:4px 0; }
+  .toggle-btn.active { background:rgba(63,185,80,.12); border-color:var(--green); color:var(--green); }
+  .create-btn { display:block; width:100%; margin:10px 0 0; padding:8px; background:rgba(88,166,255,.15); border-color:var(--accent); color:var(--accent); font-weight:600; }
+  .create-btn:hover { background:rgba(88,166,255,.25); }
+  #remove-all-btn { display:block; width:100%; margin:4px 0; font-size:11px; padding:4px; color:var(--text2); }
+
+  /* Fields */
+  .field { display:flex; align-items:center; gap:6px; margin:4px 0; }
+  .field label { font-size:11px; color:var(--text2); min-width:58px; }
+  .field input, .field select { flex:1; background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:4px 6px; color:var(--text); font-size:12px; font-family:inherit; }
+  .field input:focus, .field select:focus { outline:none; border-color:var(--accent); }
+  .field input[type="number"] { width:60px; }
+
+  .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px 8px; margin:6px 0; }
+  .stats-grid .field label { min-width:48px; }
+
+  /* Effects */
+  .section-label { font-size:11px; color:var(--text2); margin:10px 0 4px; font-weight:600; }
+  .effect-row { display:flex; align-items:center; gap:6px; padding:4px 6px; border-radius:4px; margin:2px 0; background:var(--surface); opacity:0.5; }
+  .effect-row.active { opacity:1; background:rgba(88,166,255,.06); }
+  .effect-row input[type="checkbox"] { accent-color:var(--accent); }
+  .effect-label { font-size:12px; min-width:64px; cursor:pointer; }
+  .effect-params { display:flex; gap:3px; flex:1; }
+  .effect-params input { width:52px; background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:2px 4px; color:var(--text); font-size:11px; font-family:monospace; text-align:center; }
+  .effect-params input:focus { outline:none; border-color:var(--accent); }
+
+  /* Active weapons */
+  .active-weapon-row { display:flex; align-items:center; gap:4px; padding:4px 6px; margin:2px 0; background:var(--surface); border-radius:4px; }
+  .weapon-info { flex:1; font-size:12px; font-weight:500; }
+  .small-btn { width:24px; height:24px; padding:0; font-size:12px; display:flex; align-items:center; justify-content:center; }
+  .small-btn.lvl { color:var(--accent); }
+  .small-btn.lvl:hover { background:rgba(88,166,255,.15); }
+  .small-btn.rm { color:var(--red); }
+  .small-btn.rm:hover { background:rgba(248,81,73,.15); }
+  .empty { font-size:12px; color:var(--text2); padding:4px; }
+
+  /* Info */
+  .info-row { display:flex; justify-content:space-between; padding:3px 0; font-size:12px; }
+  .info-row .label { color:var(--text2); }
+  .info-row .value { font-weight:600; font-family:monospace; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <header>
+    <h1>Weapon Test Arena</h1>
+    <span class="hint">WASD / Arrow keys to move &middot; Test weapons and create custom combinations</span>
+  </header>
+  <div class="main">
+    <!-- LEFT PANEL -->
+    <aside class="panel">
+      <h3>Weapons</h3>
+      <section>
+        <div id="weapon-toggles"></div>
+      </section>
+
+      <h3>Active</h3>
+      <section>
+        <div id="active-weapons"><div class="empty">No weapons equipped</div></div>
+        <button id="remove-all-btn">Remove All</button>
+      </section>
+
+      <h3>Custom Builder</h3>
+      <section>
+        <div id="builder"></div>
+      </section>
+    </aside>
+
+    <!-- GAME -->
+    <div id="game-container"></div>
+
+    <!-- RIGHT PANEL -->
+    <aside class="panel">
+      <h3>Enemies</h3>
+      <section>
+        <div id="enemy-controls"></div>
+      </section>
+
+      <h3>Controls</h3>
+      <section>
+        <div id="controls"></div>
+      </section>
+
+      <h3>Info</h3>
+      <section>
+        <div id="info">
+          <div class="info-row"><span class="label">Enemies</span><span class="value" id="info-enemies">0</span></div>
+          <div class="info-row"><span class="label">Weapons</span><span class="value" id="info-weapons">0</span></div>
+          <div class="info-row"><span class="label">Kills</span><span class="value" id="info-kills">0</span></div>
+          <div class="info-row"><span class="label">Player HP</span><span class="value" id="info-hp">100 / 100</span></div>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
+<script type="module" src="/src/test-main.ts"></script>
+</body>
+</html>
