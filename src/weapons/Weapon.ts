@@ -267,6 +267,17 @@ export class Weapon {
     const radius = (this.def.area || 50) + (this.level - 1) * 10;
     const damage = this.getCurrentDamage();
 
+    // Visual pulse
+    const pulse = scene.add.circle(player.x, player.y, radius, 0xffffff, 0.12);
+    pulse.setStrokeStyle(1.5, 0xffffff, 0.3);
+    scene.tweens.add({
+      targets: pulse,
+      alpha: 0,
+      scale: 1.3,
+      duration: 250,
+      onComplete: () => pulse.destroy(),
+    });
+
     for (const child of enemies.getChildren()) {
       const enemy = child as Enemy;
       if (!enemy.active) continue;

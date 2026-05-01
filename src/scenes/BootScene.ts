@@ -15,6 +15,9 @@ export class BootScene extends Phaser.Scene {
     this.generateGemTexture();
     this.generateWhipTexture();
     this.generateHolyWaterTexture();
+    this.generateGarlicTexture();
+    this.generateFireProjectileTexture();
+    this.generateFrostZoneTexture();
     this.generateGroundTextures();
 
     this.scene.start('GameScene');
@@ -103,6 +106,42 @@ export class BootScene extends Phaser.Scene {
     g.fillStyle(COLORS.HOLY_WATER, 0.5);
     g.fillCircle(40, 40, 25);
     g.generateTexture('holy_water', 80, 80);
+    g.destroy();
+  }
+
+  private generateGarlicTexture(): void {
+    const g = this.add.graphics();
+    g.fillStyle(0xeeffee, 0.2);
+    g.fillCircle(30, 30, 28);
+    g.fillStyle(0xccffcc, 0.35);
+    g.fillCircle(30, 30, 18);
+    g.fillStyle(0xffffff, 0.25);
+    g.fillCircle(30, 30, 8);
+    g.generateTexture('garlic', 60, 60);
+    g.destroy();
+  }
+
+  private generateFireProjectileTexture(): void {
+    const g = this.add.graphics();
+    g.fillStyle(0xff4400, 1);
+    g.fillCircle(6, 6, 5);
+    g.fillStyle(0xffaa00, 0.8);
+    g.fillCircle(5, 5, 3);
+    g.fillStyle(0xffff44, 0.6);
+    g.fillCircle(4, 4, 1.5);
+    g.generateTexture('fire_projectile', 12, 12);
+    g.destroy();
+  }
+
+  private generateFrostZoneTexture(): void {
+    const g = this.add.graphics();
+    g.fillStyle(0x88bbff, 0.2);
+    g.fillCircle(40, 40, 40);
+    g.fillStyle(0xaaddff, 0.35);
+    g.fillCircle(40, 40, 25);
+    g.fillStyle(0xcceeff, 0.25);
+    g.fillCircle(40, 40, 12);
+    g.generateTexture('frost_zone', 80, 80);
     g.destroy();
   }
 
