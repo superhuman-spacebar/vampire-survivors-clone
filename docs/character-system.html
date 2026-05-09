@@ -116,71 +116,72 @@
 <h2>1. 캐릭터를 정의한다</h2>
 <p>뱀서에는 캐릭터가 수십 명 있다. 전사는 HP가 높고, 마법사는 빠르고, 도적는 투사체가 많다. 각 캐릭터는 <strong>스탯 수치</strong>로 구분된다.</p>
 <p>우리도 이걸 만들고 싶다. 게임 시작 전에 캐릭터를 고르면, 그 캐릭터의 스탯으로 게임이 시작된다. 지금은 HP 100, 속도 200인 캐릭터 1명뿐이고, 이 숫자가 코드에 박혀 있어서 바꿀 수 없다.</p>
-<p>캐릭터를 <strong>데이터</strong>로 정의하면, 코드 수정 없이 숫자만 바꿔서 새 캐릭터를 만들 수 있다.</p>
+<p>캐릭터를 <strong>데이터</strong>로 정의하면, 숫자만 바꿔서 새 캐릭터를 만들 수 있다.</p>
 
-<div style="margin:20px 0;">
-<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-  <div style="padding:16px 20px; border-radius:10px; border:1px solid rgba(248,81,73,.2); background:rgba(248,81,73,.04); text-align:center; min-width:140px;">
-    <div style="font-size:28px;">⚔️</div>
-    <div style="font-size:14px; font-weight:700; margin:4px 0;">전사</div>
-    <div style="font-size:12px; color:var(--text2);">HP <strong style="color:var(--text)">120</strong> · 속도 보통</div>
-    <div style="font-size:12px; color:var(--red);">공격력 ×1.15</div>
+<div class="card-row" style="grid-template-columns:repeat(3,1fr);">
+  <div class="card" style="border-color:rgba(248,81,73,.2); background:rgba(248,81,73,.04); text-align:center;">
+    <div style="font-size:28px;">🗡</div>
+    <strong>전사</strong>
+    <p>HP <strong style="color:var(--text)">120</strong> · 속도 보통<br><span style="color:var(--red);">공격력 ×1.15</span></p>
   </div>
-  <div style="padding:16px 20px; border-radius:10px; border:1px solid rgba(88,166,255,.2); background:rgba(88,166,255,.04); text-align:center; min-width:140px;">
+  <div class="card" style="border-color:rgba(88,166,255,.2); background:rgba(88,166,255,.04); text-align:center;">
     <div style="font-size:28px;">🔮</div>
-    <div style="font-size:14px; font-weight:700; margin:4px 0;">마법사</div>
-    <div style="font-size:12px; color:var(--text2);">HP 100 · <strong style="color:var(--text)">속도 빠름</strong></div>
-    <div style="font-size:12px; color:var(--accent);">쿨다운 ×0.9</div>
+    <strong>마법사</strong>
+    <p>HP 100 · <strong style="color:var(--text)">속도 빠름</strong><br><span style="color:var(--accent);">쿨다운 ×0.9</span></p>
   </div>
-  <div style="padding:16px 20px; border-radius:10px; border:1px solid rgba(188,140,255,.2); background:rgba(188,140,255,.04); text-align:center; min-width:140px;">
-    <div style="font-size:28px;">🗡️</div>
-    <div style="font-size:14px; font-weight:700; margin:4px 0;">도적</div>
-    <div style="font-size:12px; color:var(--text2);">HP 100 · 속도 보통</div>
-    <div style="font-size:12px; color:var(--purple);">투사체 +1개</div>
+  <div class="card" style="border-color:rgba(188,140,255,.2); background:rgba(188,140,255,.04); text-align:center;">
+    <div style="font-size:28px;">🏹</div>
+    <strong>도적</strong>
+    <p>HP 100 · 속도 보통<br><span style="color:var(--purple);">투사체 +1개</span></p>
   </div>
 </div>
-</div>
+<p style="font-size:13px; color:var(--text2);">숫자만 다른 데이터. 캐릭터를 추가하고 싶으면 숫자만 바꾸면 된다.</p>
 
 <!-- ===== 2. 무기를 쥐어줌 ===== -->
 <h2>2. 무기를 쥐어준다</h2>
-<p>무기 시스템은 이미 만들었다. 채찍, 미사일, 화염탄 같은 무기가 있다. 지금은 게임이 시작되면 무조건 채찍 하나를 들고 시작한다.</p>
-<p>만들고 싶은 건 이거다: <strong>캐릭터마다 시작 무기가 다르다.</strong> 전사는 채찍으로 시작하고, 마법사는 미사일로 시작한다. 어떤 캐릭터로 시작하느냐에 따라 초반 전략이 달라진다. 레벨업하면 무기가 추가되는 건 지금과 같다.</p>
+<p>무기 시스템은 이미 만들었다. 채찍, 미사일, 화염탄 같은 무기가 있다. 이 무기를 캐릭터에게 쥐어준다.</p>
+<p>캐릭터마다 시작 무기가 다르다. 전사는 채찍으로 시작하고, 마법사는 미사일로 시작한다. 새 캐릭터를 만들면 그 캐릭터에게도 다른 무기를 쥐어줄 수 있다. 적에게도 마찬가지다.</p>
 
 <div style="margin:20px 0;">
 <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
   <div style="display:flex; gap:20px; justify-content:center; flex-wrap:wrap;">
     <div style="text-align:center;">
-      <div style="font-size:24px;">⚔️</div>
-      <div style="font-size:12px; font-weight:600; margin:4px 0;">전사</div>
+      <div style="font-size:24px;">🗡</div>
+      <div style="font-size:13px; font-weight:600; margin:4px 0;">전사</div>
       <div style="display:flex; flex-direction:column; gap:4px; margin-top:8px;">
         <div class="wu-weapon" style="border-color:rgba(63,185,80,.3);">🗡 채찍 <span style="font-size:10px; color:var(--green);">시작</span></div>
-        <div class="wu-weapon" style="opacity:0.4;">⚡ 미사일 <span style="font-size:10px; color:var(--text2);">Lv2</span></div>
-        <div class="wu-weapon" style="opacity:0.3;">🔥 화염탄 <span style="font-size:10px; color:var(--text2);">Lv5</span></div>
+        <div class="wu-weapon" style="opacity:0.5;">⚡ 미사일 <span style="font-size:10px; color:var(--text2);">Lv2</span></div>
+        <div class="wu-weapon" style="opacity:0.35;">🔥 화염탄 <span style="font-size:10px; color:var(--text2);">Lv5</span></div>
       </div>
     </div>
-    <div style="display:flex; align-items:center; color:var(--text2); font-size:20px;">→</div>
     <div style="text-align:center;">
       <div style="font-size:24px;">🔮</div>
-      <div style="font-size:12px; font-weight:600; margin:4px 0;">마법사</div>
+      <div style="font-size:13px; font-weight:600; margin:4px 0;">마법사</div>
       <div style="display:flex; flex-direction:column; gap:4px; margin-top:8px;">
         <div class="wu-weapon" style="border-color:rgba(63,185,80,.3);">⚡ 미사일 <span style="font-size:10px; color:var(--green);">시작</span></div>
-        <div class="wu-weapon" style="opacity:0.4;">🧊 냉기구 <span style="font-size:10px; color:var(--text2);">Lv3</span></div>
-        <div class="wu-weapon" style="opacity:0.3;">💧 성수 <span style="font-size:10px; color:var(--text2);">Lv7</span></div>
+        <div class="wu-weapon" style="opacity:0.5;">🧊 냉기구 <span style="font-size:10px; color:var(--text2);">Lv3</span></div>
+        <div class="wu-weapon" style="opacity:0.35;">💧 성수 <span style="font-size:10px; color:var(--text2);">Lv7</span></div>
+      </div>
+    </div>
+    <div style="text-align:center;">
+      <div style="font-size:24px;">👹</div>
+      <div style="font-size:13px; font-weight:600; margin:4px 0; color:var(--red);">몬스터</div>
+      <div style="display:flex; flex-direction:column; gap:4px; margin-top:8px;">
+        <div class="wu-weapon" style="border-color:rgba(248,81,73,.3); color:var(--red);">👊 접촉 데미지 <span style="font-size:10px;">고정</span></div>
       </div>
     </div>
   </div>
-  <div style="text-align:center; margin-top:16px; font-size:13px; color:var(--text2);">같은 무기 시스템, 다른 시작점. 레벨업하면 무기가 추가된다.</div>
+  <p style="text-align:center; margin-top:12px; font-size:13px; color:var(--text2);">내 캐릭터든 적이든, 같은 무기 시스템에서 무기를 받는다.</p>
 </div>
 </div>
 
 <!-- ===== 3. 스탯 → 무기 전이 ===== -->
 <h2>3. 스탯이 무기에 전이된다</h2>
-<p>캐릭터가 "공격력 1.15배"라는 스탯을 가지고 있으면, 그 캐릭터가 든 <strong>모든 무기의 데미지가 15% 강해져야</strong> 한다. 채찍이든 미사일이든 화염탄이든. 지금은 캐릭터 스탯이라는 개념 자체가 없기 때문에 어떤 캐릭터를 골라도 무기는 똑같이 동작한다.</p>
-<p>만들고 싶은 건: 캐릭터의 공격력(might), 쿨다운(cooldown), 범위(area), 투사체 수(amount) 같은 <strong>배율 스탯이 무기에 곱해지는 것</strong>이다.</p>
+<p>캐릭터가 "공격력 1.15배"라는 스탯을 가지고 있으면, 그 캐릭터가 든 <strong>모든 무기의 데미지가 15% 강해진다.</strong> 채찍이든 미사일이든 화염탄이든.</p>
+<p>캐릭터의 공격력(might), 쿨다운(cooldown), 범위(area), 투사체 수(amount) 같은 <strong>배율 스탯이 무기에 곱해진다.</strong> 무기 자체를 건드릴 필요 없이, 캐릭터만 바꾸면 전투가 달라진다.</p>
 
 <div style="margin:20px 0;">
 <div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
-
   <div style="display:grid; grid-template-columns:auto 1fr auto 1fr auto 1fr; gap:8px; align-items:center; text-align:center;">
     <div></div>
     <div style="font-size:13px; color:var(--text2); font-weight:600;">무기 기본</div>
@@ -189,7 +190,6 @@
     <div></div>
     <div style="font-size:13px; color:var(--text2); font-weight:600;">결과</div>
 
-    <!-- 전사 -->
     <div style="font-size:12px; font-weight:600;">🗡 전사</div>
     <div style="padding:6px; background:var(--surface2); border-radius:6px; font-size:13px;">🗡 15 dmg</div>
     <div style="color:var(--text2);">×</div>
@@ -197,7 +197,6 @@
     <div style="color:var(--text2);">=</div>
     <div style="padding:6px; background:rgba(248,81,73,.12); border-radius:6px; font-size:14px; color:var(--red); font-weight:700;">17 dmg</div>
 
-    <!-- 마법사 -->
     <div style="font-size:12px; font-weight:600;">🔮 마법사</div>
     <div style="padding:6px; background:var(--surface2); border-radius:6px; font-size:13px;">🗡 15 dmg</div>
     <div style="color:var(--text2);">×</div>
@@ -205,8 +204,7 @@
     <div style="color:var(--text2);">=</div>
     <div style="padding:6px; background:var(--surface2); border-radius:6px; font-size:14px; color:var(--text2);">15 dmg</div>
   </div>
-
-  <div style="text-align:center; margin-top:16px; font-size:13px; color:var(--text2);">같은 채찍인데 전사가 들면 더 세다. 무기 코드를 안 건드려도 캐릭터만 바꾸면 달라진다.</div>
+  <p style="text-align:center; margin-top:12px; font-size:13px; color:var(--text2);">같은 채찍인데 전사가 들면 더 세다. 무기 코드를 안 건드려도 캐릭터만 바꾸면 달라진다.</p>
 </div>
 </div>
 
@@ -221,13 +219,13 @@
 
     <div style="flex:1; min-width:200px;">
       <div style="text-align:center; font-size:14px; font-weight:600; margin-bottom:12px;">🗡 전사 — 매 레벨 공격력 +2%</div>
-      <div style="display:flex; gap:4px; align-items:flex-end; justify-content:center; height:80px;">
-        <div style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:20%; opacity:0.4;"></div>
-        <div style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:35%;opacity:0.5;"></div>
-        <div style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:50%;opacity:0.6;"></div>
-        <div style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:65%;opacity:0.7;"></div>
-        <div style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:80%;opacity:0.85;"></div>
-        <div style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:100%;"></div>
+      <div id="s4-bars-a" style="display:flex; gap:4px; align-items:flex-end; justify-content:center; height:80px;">
+        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:20%; opacity:0.4;"></div>
+        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:35%;opacity:0.5;"></div>
+        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:50%;opacity:0.6;"></div>
+        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:65%;opacity:0.7;"></div>
+        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:80%;opacity:0.85;"></div>
+        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:100%;"></div>
       </div>
       <div style="display:flex; gap:4px; justify-content:center; font-size:10px; color:var(--text2); margin-top:4px;">
         <div style="width:24px; text-align:center;">1</div>
@@ -241,13 +239,13 @@
 
     <div style="flex:1; min-width:200px;">
       <div style="text-align:center; font-size:14px; font-weight:600; margin-bottom:12px;">🏹 도적 — 20레벨마다 투사체 +1</div>
-      <div style="display:flex; gap:4px; align-items:flex-end; justify-content:center; height:80px;">
-        <div style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:25%; opacity:0.5;"></div>
-        <div style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:25%; opacity:0.5;"></div>
-        <div style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:25%; opacity:0.5;"></div>
-        <div style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:50%; opacity:0.7;"></div>
-        <div style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:50%; opacity:0.7;"></div>
-        <div style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:100%;"></div>
+      <div id="s4-bars-b" style="display:flex; gap:4px; align-items:flex-end; justify-content:center; height:80px;">
+        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:25%; opacity:0.5;"></div>
+        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:25%; opacity:0.5;"></div>
+        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:25%; opacity:0.5;"></div>
+        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:50%; opacity:0.7;"></div>
+        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:50%; opacity:0.7;"></div>
+        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:100%;"></div>
       </div>
       <div style="display:flex; gap:4px; justify-content:center; font-size:10px; color:var(--text2); margin-top:4px;">
         <div style="width:24px; text-align:center;">1</div>
@@ -260,66 +258,33 @@
     </div>
 
   </div>
-  <div style="text-align:center; margin-top:16px; font-size:13px; color:var(--text2);">레벨이 오르면 스탯이 올라가고, 스탯이 올라가면 무기가 강해진다. 자동으로.</div>
+  <p style="text-align:center; margin-top:12px; font-size:13px; color:var(--text2);">레벨이 오르면 스탯이 올라가고, 스탯이 올라가면 무기가 강해진다. 자동으로.</p>
 </div>
 </div>
 
 
 <!-- ===== 5. 모두가 같은 구조 ===== -->
 <h2>5. 플레이어, 몬스터, 보스 — 전부 같은 구조다</h2>
-<p>여기서 중요한 점이 있다. 위의 1~4를 "플레이어 전용 시스템"으로 만들 이유가 없다. 생각해 보면 몬스터도 HP가 있고, 속도가 있고, 공격을 한다. <strong>플레이어와 같은 구조다.</strong></p>
-<p>이 시스템으로 몬스터를 정의하면 어떻게 되나? 몬스터한테도 무기를 쥐어줄 수 있다. 접촉 데미지가 "오라 무기"가 되고, 거기에 둔화 효과를 붙이면 "접촉 시 둔화 몬스터"가 데이터 한 줄로 완성된다. 보스? 스탯이 높고 무기가 여러 개인 몬스터일 뿐이다.</p>
+<p>위의 1~4 시스템을 플레이어에만 쓸 이유가 없다. 몬스터도 HP가 있고, 속도가 있고, 공격을 한다. <strong>같은 구조다.</strong> 이 시스템을 몬스터에게도 그대로 적용한다.</p>
 
-<div style="margin:20px 0;">
-<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:24px;">
-
-  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
-
-    <!-- 내 캐릭터 -->
-    <div style="border:1px solid rgba(88,166,255,.2); border-radius:10px; padding:16px; background:rgba(88,166,255,.04);">
-      <div style="text-align:center; font-size:32px; margin-bottom:8px;">🧑</div>
-      <div style="text-align:center; font-size:15px; font-weight:700; color:var(--accent); margin-bottom:12px;">내 캐릭터</div>
-      <div style="font-size:12px; display:flex; flex-direction:column; gap:6px;">
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">📊 스탯:</span> HP 120, 공격력 ×1.15</div>
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">🎮 행동:</span> 키보드 입력</div>
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">⚔️ 무기:</span> 채찍 (시작)</div>
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">📈 성장:</span> 매 레벨 공격력 +2%</div>
-      </div>
-    </div>
-
-    <!-- 몬스터 -->
-    <div style="border:1px solid rgba(248,81,73,.2); border-radius:10px; padding:16px; background:rgba(248,81,73,.04);">
-      <div style="text-align:center; font-size:32px; margin-bottom:8px;">👹</div>
-      <div style="text-align:center; font-size:15px; font-weight:700; color:var(--red); margin-bottom:12px;">몬스터</div>
-      <div style="font-size:12px; display:flex; flex-direction:column; gap:6px;">
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">📊 스탯:</span> HP 5, 공격력 ×1.0</div>
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">🎮 행동:</span> 플레이어 추적</div>
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">⚔️ 무기:</span> 접촉 데미지 (오라)</div>
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">📈 성장:</span> 없음</div>
-      </div>
-    </div>
-
-    <!-- 보스 -->
-    <div style="border:1px solid rgba(210,153,34,.2); border-radius:10px; padding:16px; background:rgba(210,153,34,.04);">
-      <div style="text-align:center; font-size:32px; margin-bottom:8px;">👑</div>
-      <div style="text-align:center; font-size:15px; font-weight:700; color:var(--orange); margin-bottom:12px;">보스</div>
-      <div style="font-size:12px; display:flex; flex-direction:column; gap:6px;">
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">📊 스탯:</span> HP 500, 공격력 ×2.0</div>
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">🎮 행동:</span> 돌진 + 원거리</div>
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">⚔️ 무기:</span> 투사체 + 접촉 넉백</div>
-        <div style="padding:4px 8px; background:var(--surface2); border-radius:4px;"><span style="color:var(--text2);">📈 성장:</span> 없음</div>
-      </div>
-    </div>
-
+<div class="card-row" style="grid-template-columns:1fr 1fr 1fr;">
+  <div class="card" style="border-color:rgba(88,166,255,.2); background:rgba(88,166,255,.04);">
+    <div style="text-align:center; font-size:28px; margin-bottom:4px;">🧑</div>
+    <strong style="color:var(--accent);">내 캐릭터</strong>
+    <p style="font-size:12px;">📊 HP 120, 공격력 ×1.15<br>🎮 키보드 입력<br>⚔️ 채찍 (시작)<br>📈 매 레벨 공격력 +2%</p>
   </div>
-
-  <div style="margin-top:20px; padding:14px 18px; border-radius:8px; background:var(--surface2); text-align:center;">
-    <div style="font-size:14px; margin-bottom:4px;"><strong style="color:var(--text);">구조가 완전히 똑같다.</strong></div>
-    <div style="font-size:13px; color:var(--text2);">스탯, 행동, 무기, 성장 — 4개 블록. 숫자와 선택만 다를 뿐이다.<br>보스는 "스탯이 높고 행동이 여러 개인 몬스터"일 뿐이다.</div>
+  <div class="card" style="border-color:rgba(248,81,73,.2); background:rgba(248,81,73,.04);">
+    <div style="text-align:center; font-size:28px; margin-bottom:4px;">👹</div>
+    <strong style="color:var(--red);">몬스터</strong>
+    <p style="font-size:12px;">📊 HP 5, 공격력 ×1.0<br>🎮 플레이어 추적<br>⚔️ 접촉 데미지 (오라)<br>📈 없음</p>
   </div>
-
+  <div class="card" style="border-color:rgba(210,153,34,.2); background:rgba(210,153,34,.04);">
+    <div style="text-align:center; font-size:28px; margin-bottom:4px;">👑</div>
+    <strong style="color:var(--orange);">보스</strong>
+    <p style="font-size:12px;">📊 HP 500, 공격력 ×2.0<br>🎮 돌진 + 원거리<br>⚔️ 투사체 + 접촉 넉백<br>📈 없음</p>
+  </div>
 </div>
-</div>
+<p style="font-size:13px; color:var(--text2);">구조가 완전히 똑같다. 스탯, 행동, 무기, 성장 — 숫자만 다를 뿐이다. 보스는 "스탯이 높고 무기가 여러 개인 몬스터"일 뿐이다.</p>
 
 
 <!-- ===== 지금 상태 ===== -->
