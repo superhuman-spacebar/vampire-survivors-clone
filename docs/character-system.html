@@ -205,29 +205,59 @@
 </div>
 
 <h3>해결</h3>
-<p>캐릭터 데이터에 <strong>시작 무기</strong> 항목을 추가한다. 게임이 시작되면 이 무기를 자동으로 장착한다.</p>
+<p>캐릭터에 <strong>자유롭게 무기를 장착</strong>할 수 있게 한다. 아래에서 캐릭터를 누르고 무기를 장착해 보자.</p>
 
 <div style="margin:16px 0;">
-<div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px; display:flex; gap:24px; justify-content:center; flex-wrap:wrap;">
-  <div style="text-align:center;">
-    <div style="font-size:13px; font-weight:600; margin-bottom:6px;">🗡 전사</div>
-    <div style="font-size:13px; color:var(--text2);">시작 무기 →</div>
-    <div class="wu-weapon" style="margin-top:4px; border-color:rgba(63,185,80,.3);">🗡 채찍</div>
+<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
+
+  <!-- 캐릭터 3개 -->
+  <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+    <div class="s2-char selected" id="s2-char-0" onclick="s2Select(0)">
+      <div style="font-size:24px;">🗡</div>
+      <div style="font-size:13px; font-weight:600;">전사</div>
+      <div class="s2-slots" id="s2-slots-0"></div>
+    </div>
+    <div class="s2-char" id="s2-char-1" onclick="s2Select(1)">
+      <div style="font-size:24px;">🔮</div>
+      <div style="font-size:13px; font-weight:600;">마법사</div>
+      <div class="s2-slots" id="s2-slots-1"></div>
+    </div>
+    <div class="s2-char" id="s2-char-2" onclick="s2Select(2)">
+      <div style="font-size:24px;">👹</div>
+      <div style="font-size:13px; font-weight:600; color:var(--red);">몬스터</div>
+      <div class="s2-slots" id="s2-slots-2"></div>
+    </div>
   </div>
-  <div style="text-align:center;">
-    <div style="font-size:13px; font-weight:600; margin-bottom:6px;">🔮 마법사</div>
-    <div style="font-size:13px; color:var(--text2);">시작 무기 →</div>
-    <div class="wu-weapon" style="margin-top:4px; border-color:rgba(63,185,80,.3);">⚡ 미사일</div>
+
+  <!-- 무기 팔레트 -->
+  <div style="margin-top:16px; padding-top:12px; border-top:1px solid var(--border);">
+    <div style="font-size:12px; color:var(--text2); margin-bottom:8px; text-align:center;">무기를 클릭해서 선택한 캐릭터에 장착하세요</div>
+    <div style="display:flex; gap:6px; justify-content:center; flex-wrap:wrap;" id="s2-weapons">
+      <button class="s2-weapon-btn" onclick="s2Equip('🗡 채찍')">🗡 채찍</button>
+      <button class="s2-weapon-btn" onclick="s2Equip('⚡ 미사일')">⚡ 미사일</button>
+      <button class="s2-weapon-btn" onclick="s2Equip('🔥 화염탄')">🔥 화염탄</button>
+      <button class="s2-weapon-btn" onclick="s2Equip('💧 성수')">💧 성수</button>
+      <button class="s2-weapon-btn" onclick="s2Equip('🧊 냉기구')">🧊 냉기구</button>
+      <button class="s2-weapon-btn" onclick="s2Equip('👊 접촉')">👊 접촉</button>
+    </div>
   </div>
-  <div style="text-align:center;">
-    <div style="font-size:13px; font-weight:600; margin-bottom:6px; color:var(--red);">👹 몬스터</div>
-    <div style="font-size:13px; color:var(--text2);">시작 무기 →</div>
-    <div class="wu-weapon" style="margin-top:4px; border-color:rgba(248,81,73,.3); color:var(--red);">👊 접촉 데미지</div>
-  </div>
+
 </div>
 </div>
 
-<p>몬스터도 같다. 접촉 데미지도 무기의 일종이다. 거기에 둔화 효과를 붙이면 "접촉 시 둔화 몬스터"가 된다.</p>
+<style>
+.s2-char { text-align:center; padding:12px 16px; border-radius:10px; border:1px solid var(--border); background:var(--surface2); cursor:pointer; transition:.15s; min-width:120px; flex:1; max-width:180px; }
+.s2-char:hover { border-color:var(--accent); }
+.s2-char.selected { border-color:var(--accent); background:rgba(88,166,255,.06); }
+.s2-slots { display:flex; flex-direction:column; gap:3px; margin-top:8px; min-height:28px; }
+.s2-equipped { font-size:12px; padding:4px 8px; background:var(--bg); border:1px solid var(--border); border-radius:4px; display:flex; justify-content:space-between; align-items:center; }
+.s2-equipped .rm { cursor:pointer; color:var(--text2); font-size:10px; }
+.s2-equipped .rm:hover { color:var(--red); }
+.s2-weapon-btn { padding:6px 12px; border-radius:6px; border:1px solid var(--border); background:var(--surface2); color:var(--text); cursor:pointer; font-size:12px; transition:.15s; }
+.s2-weapon-btn:hover { border-color:var(--green); color:var(--green); }
+</style>
+
+<p>같은 무기 시스템에서 무기를 받는다. 내 캐릭터든, 적이든.</p>
 
 <!-- ===== 3. 스탯 → 무기 전이 ===== -->
 <h2>3. 스탯이 무기에 전이된다</h2>
@@ -263,120 +293,123 @@
 </div>
 
 <h3>해결</h3>
-<p>무기가 발동할 때, 캐릭터의 배율을 곱한다.</p>
+<p>무기가 발동할 때 캐릭터의 배율을 곱하거나 더한다. 캐릭터의 공격력이 ×1.15면 모든 무기의 데미지에 1.15를 곱하고, 투사체가 +1이면 모든 무기의 투사체에 1을 더한다.</p>
 
 <div style="margin:16px 0;">
-<div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px;">
-  <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:8px; align-items:center; text-align:center; font-size:13px;">
-    <div style="font-weight:600; color:var(--text2);">무기 기본값</div><div style="color:var(--text2);">&nbsp;</div>
-    <div style="font-weight:600; color:var(--text2);">캐릭터 배율</div><div style="color:var(--text2);">&nbsp;</div>
-    <div style="font-weight:600; color:var(--text2);">실제 수치</div>
+<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
 
-    <div>데미지 15</div><div style="color:var(--text2);">×</div>
-    <div>공격력 ×1.15</div><div style="color:var(--text2);">=</div>
-    <div style="color:var(--red); font-weight:700;">17</div>
+  <!-- 캐릭터 배율 슬라이더 -->
+  <div style="font-size:13px; font-weight:600; color:var(--accent); margin-bottom:12px;">캐릭터 배율</div>
+  <div class="slider-row"><label>공격력</label><input type="range" id="s3-might" min="80" max="200" value="100" oninput="s3Update()"><div class="sv" id="s3v-might" style="color:var(--red);">×1.00</div></div>
+  <div class="slider-row"><label>쿨다운</label><input type="range" id="s3-cd" min="50" max="120" value="100" oninput="s3Update()"><div class="sv" id="s3v-cd" style="color:var(--orange);">×1.00</div></div>
+  <div class="slider-row"><label>범위</label><input type="range" id="s3-area" min="80" max="200" value="100" oninput="s3Update()"><div class="sv" id="s3v-area" style="color:var(--cyan);">×1.00</div></div>
+  <div class="slider-row"><label>투사체</label><input type="range" id="s3-amount" min="0" max="3" value="0" step="1" oninput="s3Update()"><div class="sv" id="s3v-amount" style="color:var(--purple);">+0</div></div>
 
-    <div>쿨다운 1500ms</div><div style="color:var(--text2);">×</div>
-    <div>쿨다운 ×0.9</div><div style="color:var(--text2);">=</div>
-    <div style="color:var(--orange); font-weight:700;">1350ms</div>
-
-    <div>투사체 1개</div><div style="color:var(--text2);">+</div>
-    <div>추가 +1</div><div style="color:var(--text2);">=</div>
-    <div style="color:var(--purple); font-weight:700;">2개</div>
+  <!-- 무기 결과 테이블 -->
+  <div style="margin-top:16px; border-top:1px solid var(--border); padding-top:16px;">
+    <div style="font-size:13px; font-weight:600; color:var(--text2); margin-bottom:10px;">무기에 적용한 결과</div>
+    <div id="s3-results"></div>
   </div>
+
 </div>
 </div>
 
-<p>무기는 자기 기본값만 가지고 있고, 발동할 때 캐릭터 스탯을 곱한다. 캐릭터가 강해지면 모든 무기가 자동으로 강해진다.</p>
+<p>배율을 올리면 모든 무기가 동시에 강해진다. 무기를 하나하나 수정할 필요 없이 캐릭터 스탯 하나로 전부 조절된다.</p>
 
 <!-- ===== 4. 레벨업 성장 ===== -->
 <h2>4. 레벨업하면 성장한다</h2>
-<p>지금은 레벨이 올라가면 무기를 고르거나 스탯 부스트를 받는다. 하지만 <strong>캐릭터 자체의 스탯은 변하지 않는다.</strong></p>
-<p>만들고 싶은 건: 캐릭터마다 <strong>레벨업할 때 자동으로 올라가는 스탯</strong>이 있는 것이다. 전사는 레벨이 오를 때마다 공격력이 2%씩 올라간다. 도적는 20레벨마다 투사체가 1개씩 추가된다. 이게 캐릭터의 <strong>정체성</strong>이 된다 — 같은 무기를 들어도 후반에 가면 캐릭터마다 전투 스타일이 완전히 달라진다.</p>
+<p>지금도 레벨업하면 스탯 부스트를 고를 수 있다. HP +20이나 속도 +15% 같은 것. 문제는 이게 <strong>값 자체를 바꿔버린다</strong>는 것이다. 속도가 200인데 +15%를 고르면 230이 되고, 원래 값이 뭐였는지 사라진다. 이러면 나중에 배율을 되돌리거나, 무기 전이와 연결하거나, 여러 보너스를 관리하는 게 불가능하다.</p>
+<p>왜 값을 직접 바꾸면 안 되나?</p>
+<ul style="margin:8px 0 8px 20px; color:var(--text2); font-size:14px; line-height:2;">
+  <li><strong style="color:var(--text);">되돌릴 수 없다</strong> — 버프가 끝나도 원래 값을 모르니까 복원이 안 된다</li>
+  <li><strong style="color:var(--text);">뭐가 적용됐는지 모른다</strong> — 속도가 267인데, 이게 기본이 200이고 보너스가 3개 붙은 건지 알 수 없다</li>
+</ul>
+<p>값을 직접 바꾸는 게 아니라, <strong>배율을 쌓아두고 필요할 때 합산</strong>하는 구조가 필요하다.</p>
 
 <div style="margin:20px 0;">
-<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
-  <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-
-    <div style="flex:1; min-width:200px;">
-      <div style="text-align:center; font-size:14px; font-weight:600; margin-bottom:12px;">🗡 전사 — 매 레벨 공격력 +2%</div>
-      <div id="s4-bars-a" style="display:flex; gap:4px; align-items:flex-end; justify-content:center; height:80px;">
-        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:20%; opacity:0.4;"></div>
-        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:35%;opacity:0.5;"></div>
-        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:50%;opacity:0.6;"></div>
-        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:65%;opacity:0.7;"></div>
-        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:80%;opacity:0.85;"></div>
-        <div class="s4-bar" style="width:24px; background:var(--red); border-radius:4px 4px 0 0; height:100%;"></div>
-      </div>
-      <div style="display:flex; gap:4px; justify-content:center; font-size:10px; color:var(--text2); margin-top:4px;">
-        <div style="width:24px; text-align:center;">1</div>
-        <div style="width:24px; text-align:center;">5</div>
-        <div style="width:24px; text-align:center;">10</div>
-        <div style="width:24px; text-align:center;">15</div>
-        <div style="width:24px; text-align:center;">20</div>
-        <div style="width:24px; text-align:center;">25</div>
-      </div>
-    </div>
-
-    <div style="flex:1; min-width:200px;">
-      <div style="text-align:center; font-size:14px; font-weight:600; margin-bottom:12px;">🏹 도적 — 20레벨마다 투사체 +1</div>
-      <div id="s4-bars-b" style="display:flex; gap:4px; align-items:flex-end; justify-content:center; height:80px;">
-        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:25%; opacity:0.5;"></div>
-        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:25%; opacity:0.5;"></div>
-        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:25%; opacity:0.5;"></div>
-        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:50%; opacity:0.7;"></div>
-        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:50%; opacity:0.7;"></div>
-        <div class="s4-bar" style="width:24px; background:var(--purple); border-radius:4px 4px 0 0; height:100%;"></div>
-      </div>
-      <div style="display:flex; gap:4px; justify-content:center; font-size:10px; color:var(--text2); margin-top:4px;">
-        <div style="width:24px; text-align:center;">1</div>
-        <div style="width:24px; text-align:center;">10</div>
-        <div style="width:24px; text-align:center;">19</div>
-        <div style="width:24px; text-align:center;">20</div>
-        <div style="width:24px; text-align:center;">30</div>
-        <div style="width:24px; text-align:center;">40</div>
-      </div>
-    </div>
-
+<div style="background:var(--surface); border:1px solid rgba(248,81,73,.2); border-radius:12px; padding:20px;">
+  <div style="font-size:14px; font-weight:600; color:var(--red); margin-bottom:12px;">지금: 값을 직접 바꾸고 있다</div>
+  <div style="font-size:13px; display:flex; flex-direction:column; gap:6px;">
+    <div style="padding:6px 10px; background:var(--surface2); border-radius:4px;">속도 = <strong>200</strong></div>
+    <div style="padding:6px 10px; background:var(--surface2); border-radius:4px;">레벨업! 200 × 1.15 → 속도 = <strong>230</strong></div>
+    <div style="padding:6px 10px; background:var(--surface2); border-radius:4px;">또 레벨업! 230 × 1.15 → 속도 = <strong>264</strong></div>
+    <div style="padding:6px 10px; background:var(--surface2); border-radius:4px;">아이템! 264 × 1.1 → 속도 = <strong>291</strong></div>
   </div>
-  <p style="text-align:center; margin-top:12px; font-size:13px; color:var(--text2);">레벨이 오르면 스탯이 올라가고, 스탯이 올라가면 무기가 강해진다. 자동으로.</p>
+  <div style="margin-top:12px; font-size:13px; color:var(--red);">
+    지금 속도가 291인데 — 원래 값이 뭐였는지 모른다. 어떤 보너스가 몇 개 붙어있는지도 모른다. 되돌리고 싶어도 못 되돌린다.
+  </div>
 </div>
 </div>
 
 <h3>해결</h3>
-<p>캐릭터 데이터에 <strong>성장 규칙</strong>을 추가한다. "어떤 스탯이, 몇 레벨마다, 얼마나 오르는지" 3가지만 정하면 된다.</p>
+<p>스탯 배율이 <strong>쌓일 수 있는 구조</strong>를 만든다. 어디서 왔든 — 캐릭터 고유 성장이든, 레벨업 때 고른 것이든, 아이템이든 — 전부 같은 스탯에 누적된다. 계산할 때 다 합산하면 된다.</p>
 
 <div style="margin:16px 0;">
-<div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:16px;">
-  <div style="display:grid; grid-template-columns:80px 1fr 1fr 1fr; gap:8px; font-size:13px; text-align:center;">
-    <div></div>
-    <div style="color:var(--text2); font-weight:600;">어떤 스탯</div>
-    <div style="color:var(--text2); font-weight:600;">몇 레벨마다</div>
-    <div style="color:var(--text2); font-weight:600;">얼마나</div>
+<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
 
-    <div style="font-weight:600;">🗡 전사</div>
-    <div>공격력</div>
-    <div>매 레벨</div>
-    <div style="color:var(--red); font-weight:600;">+2%</div>
+  <!-- 3개 출처 -->
+  <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:16px;">
 
-    <div style="font-weight:600;">🔮 마법사</div>
-    <div>쿨다운</div>
-    <div>매 레벨</div>
-    <div style="color:var(--accent); font-weight:600;">-1%</div>
+    <!-- 캐릭터 고유 -->
+    <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px;">
+      <div style="font-size:12px; font-weight:600; color:var(--green); margin-bottom:8px;">🧬 캐릭터 고유</div>
+      <div id="s4-src-char" style="display:flex; flex-direction:column; gap:4px; min-height:28px;"></div>
+      <div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:8px;">
+        <button class="s4-add" onclick="s4Add('char','might','공격력 +2%/레벨')">+ 공격력</button>
+        <button class="s4-add" onclick="s4Add('char','cd','쿨다운 -1%/레벨')">+ 쿨다운</button>
+        <button class="s4-add" onclick="s4Add('char','amount','투사체 +1/20레벨')">+ 투사체</button>
+      </div>
+    </div>
 
-    <div style="font-weight:600;">🏹 도적</div>
-    <div>투사체</div>
-    <div>20레벨마다</div>
-    <div style="color:var(--purple); font-weight:600;">+1개</div>
+    <!-- 레벨업 선택 -->
+    <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px;">
+      <div style="font-size:12px; font-weight:600; color:var(--accent); margin-bottom:8px;">🎯 레벨업 선택</div>
+      <div id="s4-src-lvl" style="display:flex; flex-direction:column; gap:4px; min-height:28px;"></div>
+      <div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:8px;">
+        <button class="s4-add" onclick="s4Add('lvl','might','공격력 +10%')">+ 공격력</button>
+        <button class="s4-add" onclick="s4Add('lvl','cd','쿨다운 -10%')">+ 쿨다운</button>
+        <button class="s4-add" onclick="s4Add('lvl','hp','HP +20')">+ HP</button>
+      </div>
+    </div>
+
+    <!-- 아이템 -->
+    <div style="background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:12px;">
+      <div style="font-size:12px; font-weight:600; color:var(--orange); margin-bottom:8px;">📦 아이템</div>
+      <div id="s4-src-item" style="display:flex; flex-direction:column; gap:4px; min-height:28px;"></div>
+      <div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:8px;">
+        <button class="s4-add" onclick="s4Add('item','area','범위 +15%')">+ 범위</button>
+        <button class="s4-add" onclick="s4Add('item','speed','속도 +10%')">+ 속도</button>
+        <button class="s4-add" onclick="s4Add('item','might','공격력 +5%')">+ 공격력</button>
+      </div>
+    </div>
+
   </div>
+
+  <!-- 합산 결과 -->
+  <div style="border-top:1px solid var(--border); padding-top:16px;">
+    <div style="font-size:13px; font-weight:600; color:var(--text2); margin-bottom:10px;">합산 결과</div>
+    <div id="s4-total" style="display:flex; gap:10px; flex-wrap:wrap;"></div>
+  </div>
+
 </div>
 </div>
 
-<p>레벨이 올라가면 이 규칙에 따라 스탯이 자동으로 올라가고, 3번의 전이 시스템 덕분에 무기도 자동으로 강해진다.</p>
+<style>
+.s4-stat { padding:6px 12px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; font-size:13px; }
+.s4-stat .label { color:var(--text2); font-size:11px; }
+.s4-stat .value { font-weight:700; }
+.s4-add { padding:5px 12px; border-radius:6px; border:1px dashed var(--border); background:transparent; color:var(--text2); cursor:pointer; font-size:12px; transition:.15s; }
+.s4-add:hover { border-color:var(--accent); color:var(--accent); border-style:solid; }
+.s4-rule { display:flex; align-items:center; gap:8px; padding:6px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; font-size:13px; }
+.s4-rule .rm { cursor:pointer; color:var(--text2); font-size:12px; margin-left:auto; }
+.s4-rule .rm:hover { color:var(--red); }
+</style>
+
+<p>출처가 다르지만 같은 곳에 쌓인다. 쌓일수록 스탯이 올라가고, 3번의 전이 시스템 덕분에 무기도 자동으로 강해진다.</p>
 
 <!-- ===== 5. 모두가 같은 구조 ===== -->
 <h2>5. 플레이어, 몬스터, 보스 — 전부 같은 구조다</h2>
-<p>위의 1~4 시스템을 플레이어에만 쓸 이유가 없다. 몬스터도 HP가 있고, 속도가 있고, 공격을 한다. <strong>같은 구조다.</strong> 이 시스템을 몬스터에게도 그대로 적용한다.</p>
+<p>위의 1~4를 보면, 플레이어와 몬스터는 사실 같은 것이다. 둘 다 스탯이 있고, 무기를 들고, 행동한다. 그런데 <strong>지금은 완전히 다른 코드로 만들어져 있다.</strong> Player.ts와 Enemy.ts가 따로 있고, 공유하는 게 없다.</p>
 
 <div class="card-row" style="grid-template-columns:1fr 1fr 1fr;">
   <div class="card" style="border-color:rgba(88,166,255,.2); background:rgba(88,166,255,.04);">
@@ -392,130 +425,194 @@
   <div class="card" style="border-color:rgba(210,153,34,.2); background:rgba(210,153,34,.04);">
     <div style="text-align:center; font-size:28px; margin-bottom:4px;">👑</div>
     <strong style="color:var(--orange);">보스</strong>
-    <p style="font-size:12px;">📊 HP 500, 공격력 ×2.0<br>🎮 돌진 + 원거리<br>⚔️ 투사체 + 접촉 넉백<br>📈 없음</p>
+    <p style="font-size:12px;">📊 HP 500, 공격력 ×2.0<br>🎮 거리 유지 + 발사<br>⚔️ 투사체 + 접촉 넉백<br>📈 없음</p>
   </div>
 </div>
-<p style="font-size:13px; color:var(--text2);">구조가 완전히 똑같다. 스탯, 행동, 무기, 성장 — 숫자만 다를 뿐이다. 보스는 "스탯이 높고 무기가 여러 개인 몬스터"일 뿐이다.</p>
+<p>구조가 똑같은데 코드가 따로다. 기능을 하나 추가하면 양쪽 다 고쳐야 한다.</p>
 
 <h3>해결</h3>
-<p>플레이어와 몬스터가 <strong>같은 정의 구조</strong>를 쓴다. 차이는 행동 방식뿐이다.</p>
+<p>같은 구조를 쓴다. 다른 건 <strong>행동 방식</strong>뿐이다. 행동을 모듈로 만들어서 갈아끼우면 된다.</p>
 
-<div class="compare">
-  <div style="border-color:var(--accent)">
-    <div class="label" style="color:var(--accent);">🧑 내 캐릭터</div>
-    <div style="font-size:13px; display:flex; flex-direction:column; gap:4px;">
-      <div>📊 HP 120, 공격력 ×1.15</div>
-      <div>🎮 <strong style="color:var(--accent);">키보드 입력</strong></div>
-      <div>⚔️ 채찍</div>
-      <div>📈 매 레벨 공격력 +2%</div>
-    </div>
+<!-- 4개 카드 나란히 -->
+<div style="margin:16px 0;">
+<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px;">
+  <div class="s5-card" onclick="s5Show('input')" id="s5c-input" style="border-color:rgba(88,166,255,.3);">
+    <div style="font-size:24px;">🧑</div>
+    <div style="font-size:13px; font-weight:700; color:var(--accent);">내 캐릭터</div>
+    <div style="font-size:11px; color:var(--text2); margin-top:4px;">📊 HP 120, 공격력 ×1.15</div>
+    <div style="font-size:11px; color:var(--text2);">⚔️ 채찍</div>
+    <div class="s5-beh" style="background:rgba(88,166,255,.1); color:var(--accent);">🎮 키보드 입력</div>
   </div>
-  <div style="border-color:var(--red)">
-    <div class="label" style="color:var(--red);">👹 몬스터</div>
-    <div style="font-size:13px; display:flex; flex-direction:column; gap:4px;">
-      <div>📊 HP 5, 공격력 ×1.0</div>
-      <div>🎮 <strong style="color:var(--red);">플레이어 추적</strong></div>
-      <div>⚔️ 접촉 데미지</div>
-      <div>📈 없음</div>
-    </div>
+  <div class="s5-card" onclick="s5Show('chase')" id="s5c-chase" style="border-color:rgba(248,81,73,.3);">
+    <div style="font-size:24px;">👹</div>
+    <div style="font-size:13px; font-weight:700; color:var(--red);">추적 몬스터</div>
+    <div style="font-size:11px; color:var(--text2); margin-top:4px;">📊 HP 5, 공격력 ×1.0</div>
+    <div style="font-size:11px; color:var(--text2);">⚔️ 접촉 데미지</div>
+    <div class="s5-beh" style="background:rgba(248,81,73,.1); color:var(--red);">🏃 플레이어 추적</div>
+  </div>
+  <div class="s5-card" onclick="s5Show('ranged')" id="s5c-ranged" style="border-color:rgba(188,140,255,.3);">
+    <div style="font-size:24px;">🏹</div>
+    <div style="font-size:13px; font-weight:700; color:var(--purple);">원거리 몬스터</div>
+    <div style="font-size:11px; color:var(--text2); margin-top:4px;">📊 HP 3, 공격력 ×1.0</div>
+    <div style="font-size:11px; color:var(--text2);">⚔️ 투사체</div>
+    <div class="s5-beh" style="background:rgba(188,140,255,.1); color:var(--purple);">🏹 거리 유지 + 발사</div>
   </div>
 </div>
-
-<p>같은 구조, 같은 무기 시스템, 같은 스탯 전이. <strong>행동과 숫자만 다르다.</strong></p>
-
-<!-- ===== 인터랙티브 데모 ===== -->
-<h2>직접 확인해 보기</h2>
-
-<h3>스탯 전이 시뮬레이터</h3>
-<p style="font-size:14px; color:var(--text2); margin-bottom:12px;">캐릭터를 선택하면 같은 Whip의 수치가 어떻게 달라지는지 볼 수 있다.</p>
-<div class="flow-box">
-  <div style="display:flex; gap:8px; margin-bottom:20px; justify-content:center;">
-    <button class="bb sel" onclick="flowShow('warrior',this)">🗡 전사</button>
-    <button class="bb" onclick="flowShow('mage',this)">🔮 마법사</button>
-    <button class="bb" onclick="flowShow('rogue',this)">🏹 도적</button>
-  </div>
-  <div id="flow-stats" style="margin-bottom:16px;"></div>
-  <div style="border-top:1px solid var(--border); padding-top:16px; margin-top:8px;">
-    <div style="font-size:13px; color:var(--text2); margin-bottom:12px; font-weight:600;">🗡 Whip (기본: 데미지 15, 쿨다운 1500ms, 범위 ×1)</div>
-    <div id="flow-weapon"></div>
-  </div>
-</div>
-
-<h3>성장 시뮬레이터</h3>
-<p style="font-size:14px; color:var(--text2); margin-bottom:12px;">레벨을 올려보면 캐릭터마다 스탯이 어떻게 변하는지 볼 수 있다.</p>
-<div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px;">
-  <div style="display:flex; gap:8px; margin-bottom:16px; justify-content:center;">
-    <button class="bb sel" onclick="growShow('warrior',this)">🗡 전사</button>
-    <button class="bb" onclick="growShow('mage',this)">🔮 마법사</button>
-    <button class="bb" onclick="growShow('rogue',this)">🏹 도적</button>
-  </div>
-  <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
-    <label style="font-size:13px; color:var(--text2);">레벨:</label>
-    <input type="range" id="grow-level" min="1" max="50" value="1" style="flex:1; accent-color:var(--accent);" oninput="growUpdate()">
-    <span id="grow-level-val" style="font-size:16px; font-weight:700; color:var(--accent); width:48px; text-align:center;">Lv1</span>
-  </div>
-  <div id="grow-stats"></div>
-  <div id="grow-weapon" style="border-top:1px solid var(--border); padding-top:12px; margin-top:12px;"></div>
-</div>
-
-<h3>행동 패턴</h3>
-<p style="font-size:14px; color:var(--text2); margin-bottom:12px;">같은 스탯인데 행동만 다른 몬스터를 비교해 보세요.</p>
-<div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:20px;">
-  <div style="display:flex; gap:8px; margin-bottom:16px; justify-content:center;">
-    <button class="bb sel" onclick="behShow('chase',this)">🏃 chase</button>
-    <button class="bb" onclick="behShow('charge',this)">💥 charge</button>
-    <button class="bb" onclick="behShow('ranged',this)">🏹 ranged</button>
-    <button class="bb" onclick="behShow('explode',this)">💣 explode</button>
-  </div>
-  <canvas id="beh-canvas" width="400" height="200" style="display:block; margin:0 auto; border-radius:8px; border:1px solid var(--border); background:var(--bg);"></canvas>
-  <div id="beh-desc" style="text-align:center; margin-top:12px; font-size:14px; color:var(--text2);"></div>
 </div>
 
 
-<!-- ===== 인터랙티브 빌더 ===== -->
-<h2>직접 조합해 보기</h2>
-<p>캐릭터를 만들어 보세요. 스탯, 시작 무기, 성장 규칙을 고르면 설정 데이터가 자동으로 만들어집니다.</p>
-
-<div class="builder">
-  <div class="br"><div class="bl">이름</div>
-    <input type="text" id="b-name" value="Custom Hero" style="background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:6px 12px; color:var(--text); font-size:14px; flex:1;">
-  </div>
-
-  <div class="br"><div class="bl">⚔️ 시작무기</div><div id="b-weapon">
-    <button class="bb sel" data-v="whip" onclick="bPick('weapon',this)">채찍</button>
-    <button class="bb" data-v="magic_missile" onclick="bPick('weapon',this)">미사일</button>
-    <button class="bb" data-v="holy_water" onclick="bPick('weapon',this)">성수</button>
-    <button class="bb" data-v="garlic" onclick="bPick('weapon',this)">마늘</button>
-    <button class="bb" data-v="fire_wand" onclick="bPick('weapon',this)">화염탄</button>
-  </div></div>
-
-  <div style="font-size:13px; color:var(--orange); font-weight:600; margin:16px 0 8px;">📊 스탯</div>
-  <div class="slider-row"><label>maxHp</label><input type="range" id="b-maxhp" min="60" max="200" value="100" oninput="bUpdate()"><div class="sv" id="bv-maxhp">100</div></div>
-  <div class="slider-row"><label>moveSpeed</label><input type="range" id="b-movespeed" min="50" max="150" value="100" oninput="bUpdate()"><div class="sv" id="bv-movespeed">1.0</div></div>
-  <div class="slider-row"><label>might</label><input type="range" id="b-might" min="80" max="150" value="100" oninput="bUpdate()"><div class="sv" id="bv-might">1.0</div></div>
-  <div class="slider-row"><label>cooldown</label><input type="range" id="b-cooldown" min="60" max="120" value="100" oninput="bUpdate()"><div class="sv" id="bv-cooldown">1.0</div></div>
-  <div class="slider-row"><label>area</label><input type="range" id="b-area" min="80" max="150" value="100" oninput="bUpdate()"><div class="sv" id="bv-area">1.0</div></div>
-  <div class="slider-row"><label>amount</label><input type="range" id="b-amount" min="0" max="3" value="0" step="1" oninput="bUpdate()"><div class="sv" id="bv-amount">+0</div></div>
-
-  <div style="font-size:13px; color:var(--orange); font-weight:600; margin:16px 0 8px;">📈 레벨업 성장</div>
-  <div id="b-growth">
-    <div class="br">
-      <button class="bb" data-stat="might" onclick="bToggleGrowth(this)">Might +2%/레벨</button>
-      <button class="bb" data-stat="cooldown" onclick="bToggleGrowth(this)">Cooldown -1%/레벨</button>
-      <button class="bb" data-stat="area" onclick="bToggleGrowth(this)">Area +2%/레벨</button>
-      <button class="bb" data-stat="amount" onclick="bToggleGrowth(this)">Amount +1/20레벨</button>
-    </div>
-  </div>
-
-  <pre id="b-code" style="font-size:12px; margin-top:20px;"></pre>
+<!-- 행동 미리보기 캔버스 -->
+<div style="margin:16px 0;">
+<div style="background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:20px;">
+  <div id="s5-preview-label" style="font-size:14px; font-weight:600; margin-bottom:12px; text-align:center; color:var(--accent);">🎮 키보드 입력</div>
+  <canvas id="s5-canvas" width="500" height="180" style="display:block; margin:0 auto; border-radius:8px; border:1px solid var(--border); background:var(--bg); width:100%; max-width:500px;"></canvas>
+  <div id="s5-desc" style="text-align:center; margin-top:10px; font-size:13px; color:var(--text2);">플레이어가 직접 조작한다.</div>
+</div>
 </div>
 
+<style>
+.s5-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:12px; text-align:center; cursor:pointer; transition:.15s; }
+.s5-card:hover { border-color:var(--accent); }
+.s5-card.active { box-shadow:0 0 12px rgba(88,166,255,.15); }
+.s5-beh { font-size:11px; font-weight:600; margin-top:6px; padding:4px 8px; border-radius:4px; }
+</style>
 
-<h2 style="border:none; text-align:center; color:var(--green); font-size:28px; margin-top:80px;">플레이어도 몬스터도 같은 블록이다.</h2>
-<p style="text-align:center; color:var(--text2); font-size:17px; margin-bottom:80px;">📊 스탯 + 🎮 행동 + ⚔️ 무기 + 📈 성장 = 모든 엔티티</p>
+<p>같은 구조에 행동만 갈아끼운다. 추적할지, 거리를 유지할지, 돌진할지 — 모듈 하나만 바꾸면 된다.</p>
+
 
 
 <script>
+// ===== Section 5: Behavior preview =====
+var s5Type = 'input';
+var s5Frame = 0;
+var s5Px = 380, s5Py = 90; // player position
+var s5Keys = { left:false, right:false, up:false, down:false };
+var s5Data = {
+  input:  { label:'🎮 키보드 입력', color:'#58a6ff', desc:'WASD로 직접 움직여 보세요.' },
+  chase:  { label:'🏃 플레이어 추적', color:'#f85149', desc:'WASD로 움직여 보세요. 몬스터가 따라옵니다.' },
+  ranged: { label:'🏹 거리 유지 + 발사', color:'#bc8cff', desc:'WASD로 움직여 보세요. 몬스터가 거리를 유지하며 쏩니다.' },
+  charge: { label:'💥 멈췄다가 돌진', color:'#d29922', desc:'WASD로 움직여 보세요. 몬스터가 멈췄다가 돌진합니다.' },
+};
+
+// keyboard
+document.addEventListener('keydown', function(e) {
+  if(e.key==='a'||e.key==='A') s5Keys.left=true;
+  if(e.key==='d'||e.key==='D') s5Keys.right=true;
+  if(e.key==='w'||e.key==='W') s5Keys.up=true;
+  if(e.key==='s'||e.key==='S') s5Keys.down=true;
+});
+document.addEventListener('keyup', function(e) {
+  if(e.key==='a'||e.key==='A') s5Keys.left=false;
+  if(e.key==='d'||e.key==='D') s5Keys.right=false;
+  if(e.key==='w'||e.key==='W') s5Keys.up=false;
+  if(e.key==='s'||e.key==='S') s5Keys.down=false;
+});
+
+// enemy state
+var s5Ex = 80, s5Ey = 90;
+var s5ChargePhase = 0; // 0=wait, 1=charging
+var s5ChargeTimer = 0;
+var s5ProjX = -1, s5ProjY = -1, s5ProjAngle = 0, s5ProjTimer = 0;
+
+function s5Show(type) {
+  s5Type = type;
+  s5Frame = 0;
+  s5Ex = 80; s5Ey = 90;
+  s5ChargePhase = 0; s5ChargeTimer = 0;
+  s5ProjX = -1; s5ProjTimer = 0;
+  document.querySelectorAll('.s5-card').forEach(function(c){c.classList.remove('active')});
+  var card = document.getElementById('s5c-'+type);
+  if(card) card.classList.add('active');
+  document.getElementById('s5-preview-label').textContent = s5Data[type].label;
+  document.getElementById('s5-preview-label').style.color = s5Data[type].color;
+  document.getElementById('s5-desc').textContent = s5Data[type].desc;
+}
+
+function s5Draw() {
+  var cv = document.getElementById('s5-canvas');
+  if(!cv) { requestAnimationFrame(s5Draw); return; }
+  var ctx = cv.getContext('2d');
+  var w = cv.width, h = cv.height;
+  ctx.clearRect(0,0,w,h);
+
+  // grid
+  ctx.strokeStyle='#21262d';
+  for(var i=0;i<w;i+=20){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,h);ctx.stroke();}
+  for(var i=0;i<h;i+=20){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(w,i);ctx.stroke();}
+
+  // move player
+  var spd = 2.5;
+  if(s5Keys.left) s5Px -= spd;
+  if(s5Keys.right) s5Px += spd;
+  if(s5Keys.up) s5Py -= spd;
+  if(s5Keys.down) s5Py += spd;
+  s5Px = Math.max(16, Math.min(w-16, s5Px));
+  s5Py = Math.max(16, Math.min(h-16, s5Py));
+
+  // draw player
+  ctx.fillStyle='#58a6ff';ctx.beginPath();ctx.arc(s5Px,s5Py,14,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle='#fff';ctx.font='10px monospace';ctx.textAlign='center';ctx.fillText('P',s5Px,s5Py+4);
+
+  s5Frame++;
+
+  if(s5Type==='input'){
+    // just player, no enemy
+    ctx.fillStyle='#58a6ff22';ctx.beginPath();ctx.arc(s5Px,s5Py,24,0,Math.PI*2);ctx.fill();
+  }
+  else if(s5Type==='chase'){
+    // enemy chases player
+    var angle = Math.atan2(s5Py-s5Ey, s5Px-s5Ex);
+    s5Ex += Math.cos(angle)*1.2;
+    s5Ey += Math.sin(angle)*1.2;
+    ctx.fillStyle='#f85149';ctx.beginPath();ctx.arc(s5Ex,s5Ey,10,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#f8514944';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(s5Ex,s5Ey);ctx.lineTo(s5Px,s5Py);ctx.stroke();ctx.setLineDash([]);
+  }
+  else if(s5Type==='ranged'){
+    // enemy keeps distance
+    var dist = Math.sqrt((s5Px-s5Ex)*(s5Px-s5Ex)+(s5Py-s5Ey)*(s5Py-s5Ey));
+    var angle = Math.atan2(s5Py-s5Ey, s5Px-s5Ex);
+    var targetDist = 140;
+    if(dist < targetDist - 10) { s5Ex -= Math.cos(angle)*1.0; s5Ey -= Math.sin(angle)*1.0; }
+    else if(dist > targetDist + 10) { s5Ex += Math.cos(angle)*0.8; s5Ey += Math.sin(angle)*0.8; }
+    s5Ex = Math.max(12, Math.min(w-12, s5Ex));
+    s5Ey = Math.max(12, Math.min(h-12, s5Ey));
+
+    ctx.fillStyle='#bc8cff';ctx.beginPath();ctx.arc(s5Ex,s5Ey,10,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#bc8cff33';ctx.setLineDash([4,4]);ctx.beginPath();ctx.arc(s5Ex,s5Ey,targetDist,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+
+    // projectile
+    s5ProjTimer++;
+    if(s5ProjTimer > 60) { s5ProjTimer=0; s5ProjX=s5Ex; s5ProjY=s5Ey; s5ProjAngle=angle; }
+    if(s5ProjX > 0) {
+      s5ProjX += Math.cos(s5ProjAngle)*4;
+      s5ProjY += Math.sin(s5ProjAngle)*4;
+      ctx.fillStyle='#ffaa00';ctx.beginPath();ctx.arc(s5ProjX,s5ProjY,4,0,Math.PI*2);ctx.fill();
+      if(s5ProjX<0||s5ProjX>w||s5ProjY<0||s5ProjY>h) s5ProjX=-1;
+    }
+  }
+  else if(s5Type==='charge'){
+    var angle = Math.atan2(s5Py-s5Ey, s5Px-s5Ex);
+    s5ChargeTimer++;
+    if(s5ChargePhase===0){
+      // waiting
+      ctx.fillStyle='#d29922';ctx.beginPath();ctx.arc(s5Ex,s5Ey,10,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#d2992266';ctx.font='10px monospace';ctx.fillText('...',s5Ex,s5Ey-16);
+      if(s5ChargeTimer>90){ s5ChargePhase=1; s5ChargeTimer=0; }
+    } else {
+      // charging!
+      s5Ex += Math.cos(angle)*5;
+      s5Ey += Math.sin(angle)*5;
+      ctx.fillStyle='#ff8800';ctx.beginPath();ctx.arc(s5Ex,s5Ey,10,0,Math.PI*2);ctx.fill();
+      ctx.strokeStyle='#ff880066';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(s5Ex-Math.cos(angle)*20,s5Ey-Math.sin(angle)*20);ctx.lineTo(s5Ex,s5Ey);ctx.stroke();ctx.lineWidth=1;
+      var dist = Math.sqrt((s5Px-s5Ex)*(s5Px-s5Ex)+(s5Py-s5Ey)*(s5Py-s5Ey));
+      if(s5ChargeTimer>40 || dist<20){ s5ChargePhase=0; s5ChargeTimer=0; s5Ex=80; s5Ey=90; }
+    }
+  }
+
+  requestAnimationFrame(s5Draw);
+}
+s5Draw();
+
 // ===== Section 1: Character cards (additive, editable) =====
 let s1Count = 0;
 const s1StatDefs = [
@@ -581,266 +678,137 @@ function s1Remove(id) {
   list.appendChild(btn);
 })();
 
-// ===== Flow demo: stats → weapon =====
-const charDefs = {
-  warrior: { name:'전사', emoji:'🗡', might:1.15, cooldown:1.0, area:1.0, amount:0, maxHp:120, moveSpeed:1.0, growth:[{stat:'might',every:1,amount:0.02}] },
-  mage: { name:'마법사', emoji:'🔮', might:1.0, cooldown:0.9, area:1.0, amount:0, maxHp:100, moveSpeed:1.1, growth:[{stat:'cooldown',every:1,amount:-0.01}] },
-  rogue: { name:'도적', emoji:'🏹', might:1.0, cooldown:1.0, area:1.0, amount:1, maxHp:100, moveSpeed:1.0, growth:[{stat:'amount',every:20,amount:1}] },
+// ===== Section 4: Stacking from multiple sources =====
+var s4Items = [];
+var s4Id = 0;
+var s4Defs = {
+  might:  { color:'var(--red)', base:1.0, label:'공격력', fmt:function(v){return 'x'+v.toFixed(2)} },
+  cd:     { color:'var(--orange)', base:1.0, label:'쿨다운', fmt:function(v){return 'x'+v.toFixed(2)} },
+  area:   { color:'var(--cyan)', base:1.0, label:'범위', fmt:function(v){return 'x'+v.toFixed(2)} },
+  amount: { color:'var(--purple)', base:0, label:'투사체', fmt:function(v){return '+'+v} },
+  hp:     { color:'var(--green)', base:100, label:'HP', fmt:function(v){return ''+Math.round(v)} },
+  speed:  { color:'var(--accent)', base:1.0, label:'속도', fmt:function(v){return 'x'+v.toFixed(2)} },
 };
-let curChar = 'warrior';
-
-function flowShow(id, btn) {
-  btn.parentElement.querySelectorAll('.bb').forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
-  curChar = id;
-  const c = charDefs[id];
-
-  // Stats
-  const stats = [
-    { name:'might', val:c.might, max:1.5, color:'var(--red)', fmt:v=>'×'+v.toFixed(2) },
-    { name:'cooldown', val:c.cooldown, max:1.2, color:'var(--orange)', fmt:v=>'×'+v.toFixed(2) },
-    { name:'area', val:c.area, max:1.5, color:'var(--cyan)', fmt:v=>'×'+v.toFixed(2) },
-    { name:'amount', val:c.amount, max:3, color:'var(--purple)', fmt:v=>'+'+v },
-  ];
-  let sh = '';
-  for (const s of stats) {
-    const highlight = (s.name === 'might' && s.val > 1) || (s.name === 'cooldown' && s.val < 1) || (s.name === 'amount' && s.val > 0) || (s.name === 'area' && s.val > 1);
-    sh += `<div class="stat-row">
-      <div class="stat-name" style="${highlight?'color:'+s.color+';font-weight:600':''}">${s.name}</div>
-      <div class="stat-bar-bg"><div class="stat-bar" style="width:${(s.val/s.max)*100}%; background:${s.color};"></div></div>
-      <div class="stat-val" style="color:${highlight?s.color:'var(--text2)'}">${s.fmt(s.val)}</div>
-    </div>`;
-  }
-  document.getElementById('flow-stats').innerHTML = sh;
-
-  // Weapon result
-  const dmg = Math.round(15 * c.might);
-  const cd = Math.round(1500 * c.cooldown);
-  const wh = `
-    <div class="flow-row">
-      <span>데미지: 15</span><span class="flow-arrow">×</span><span style="color:var(--red)">${c.might}</span><span class="flow-arrow">=</span>
-      <span class="flow-result" style="background:rgba(248,81,73,.1); color:var(--red);">${dmg}</span>
-    </div>
-    <div class="flow-row">
-      <span>쿨다운: 1500ms</span><span class="flow-arrow">×</span><span style="color:var(--orange)">${c.cooldown}</span><span class="flow-arrow">=</span>
-      <span class="flow-result" style="background:rgba(210,153,34,.1); color:var(--orange);">${cd}ms</span>
-    </div>
-    <div class="flow-row">
-      <span>발사체: 기본</span><span class="flow-arrow">+</span><span style="color:var(--purple)">${c.amount}</span><span class="flow-arrow">=</span>
-      <span class="flow-result" style="background:rgba(188,140,255,.1); color:var(--purple);">${1+c.amount}개</span>
-    </div>`;
-  document.getElementById('flow-weapon').innerHTML = wh;
-}
-flowShow('warrior', document.querySelector('#flow-stats')?.closest('.flow-box')?.querySelector('.bb') || document.querySelectorAll('.flow-box .bb')[0]);
-
-// ===== Behavior demo =====
-let behType = 'chase';
-let behFrame = 0;
-const behDescs = {
-  chase: '타겟을 향해 일직선으로 이동한다. 단순하지만 무리 지으면 위협적.',
-  charge: '잠시 멈추고 준비 → 빠르게 돌진! 피하지 않으면 큰 데미지.',
-  ranged: '일정 거리를 유지하며 투사체를 발사한다. 접근해야 처치 가능.',
-  explode: '타겟에 접근하면 빨갛게 변하며 자폭. 범위 데미지.',
+var s4Vals = {
+  'char': { 'might':0.02, 'cd':-0.01, 'amount':1 },
+  'lvl':  { 'might':0.10, 'cd':-0.10, 'hp':20 },
+  'item': { 'area':0.15, 'speed':0.10, 'might':0.05 },
 };
-function behShow(type, btn) {
-  btn.parentElement.querySelectorAll('.bb').forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
-  behType = type;
-  behFrame = 0;
-  document.getElementById('beh-desc').textContent = behDescs[type];
+var s4Labels = {
+  'char': { 'might':'공격력 +2%/레벨', 'cd':'쿨다운 -1%/레벨', 'amount':'투사체 +1/20레벨' },
+  'lvl':  { 'might':'공격력 +10%', 'cd':'쿨다운 -10%', 'hp':'HP +20' },
+  'item': { 'area':'범위 +15%', 'speed':'속도 +10%', 'might':'공격력 +5%' },
+};
+var s4Colors = { 'char':'var(--green)', 'lvl':'var(--accent)', 'item':'var(--orange)' };
+
+function s4Add(src, stat, label) {
+  s4Id++;
+  var id = 's4i' + s4Id;
+  var delta = s4Vals[src][stat];
+  s4Items.push({ id:id, src:src, stat:stat, delta:delta, label:label });
+
+  var container = document.getElementById('s4-src-' + src);
+  var el = document.createElement('div');
+  el.id = id;
+  el.style.cssText = 'display:flex; justify-content:space-between; align-items:center; padding:3px 8px; background:var(--bg); border:1px solid var(--border); border-radius:4px; font-size:12px;';
+  el.innerHTML = '<span style="color:' + s4Defs[stat].color + ';">' + label + '</span><span style="cursor:pointer; color:var(--text2); font-size:10px;" onclick="s4Remove(\'' + id + '\')">&times;</span>';
+  container.appendChild(el);
+
+  s4CalcTotal();
 }
-document.getElementById('beh-desc').textContent = behDescs.chase;
 
-function drawBeh() {
-  const cv = document.getElementById('beh-canvas');
-  const ctx = cv.getContext('2d');
-  const w = cv.width, h = cv.height;
-  ctx.clearRect(0, 0, w, h);
-
-  // Grid
-  ctx.strokeStyle = '#21262d';
-  for (let i = 0; i < w; i += 20) { ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i,h); ctx.stroke(); }
-  for (let i = 0; i < h; i += 20) { ctx.beginPath(); ctx.moveTo(0,i); ctx.lineTo(w,i); ctx.stroke(); }
-
-  // Player
-  const px = 300, py = 100;
-  ctx.fillStyle = '#58a6ff';
-  ctx.beginPath(); ctx.arc(px, py, 14, 0, Math.PI*2); ctx.fill();
-  ctx.fillStyle = '#fff'; ctx.font = '10px monospace'; ctx.textAlign = 'center';
-  ctx.fillText('P', px, py+4);
-
-  const t = behFrame / 60;
-  behFrame++;
-
-  if (behType === 'chase') {
-    const ex = 80 + t * 30, ey = py;
-    ctx.fillStyle = '#f85149';
-    ctx.beginPath(); ctx.arc(Math.min(ex, px-30), ey, 10, 0, Math.PI*2); ctx.fill();
-    // Arrow
-    ctx.strokeStyle = '#f85149'; ctx.lineWidth = 1; ctx.setLineDash([4,4]);
-    ctx.beginPath(); ctx.moveTo(Math.min(ex,px-30)+12, ey); ctx.lineTo(px-16, py); ctx.stroke();
-    ctx.setLineDash([]); ctx.lineWidth = 1;
-  }
-  else if (behType === 'charge') {
-    const phase = t % 3;
-    let ex;
-    if (phase < 1.5) { ex = 80; ctx.fillStyle = '#f85149'; } // waiting
-    else { ex = 80 + (phase-1.5) * 200; ctx.fillStyle = '#ff0000'; } // charging!
-    ctx.beginPath(); ctx.arc(Math.min(ex, px-30), py, 10, 0, Math.PI*2); ctx.fill();
-    if (phase < 1.5) {
-      ctx.fillStyle = '#ff000066'; ctx.font = '10px monospace';
-      ctx.fillText('...', 80, py - 16);
-    } else {
-      ctx.strokeStyle = '#ff000088'; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.moveTo(80, py); ctx.lineTo(Math.min(ex, px-30), py); ctx.stroke();
-      ctx.lineWidth = 1;
-    }
-  }
-  else if (behType === 'ranged') {
-    const ex = 100, ey = py;
-    ctx.fillStyle = '#f85149';
-    ctx.beginPath(); ctx.arc(ex, ey, 10, 0, Math.PI*2); ctx.fill();
-    // Projectile
-    const pt = (t * 80) % 200;
-    if (pt < 180) {
-      ctx.fillStyle = '#ffaa00';
-      ctx.beginPath(); ctx.arc(ex + 20 + pt, ey, 4, 0, Math.PI*2); ctx.fill();
-    }
-    // Distance indicator
-    ctx.strokeStyle = '#f8514944'; ctx.setLineDash([4,4]);
-    ctx.beginPath(); ctx.arc(ex, ey, 60, 0, Math.PI*2); ctx.stroke();
-    ctx.setLineDash([]);
-  }
-  else if (behType === 'explode') {
-    const phase = t % 3;
-    let ex;
-    if (phase < 2) { ex = 80 + phase * 40; ctx.fillStyle = '#f85149'; }
-    else {
-      ex = 80 + 2 * 40;
-      const boom = (phase - 2);
-      ctx.fillStyle = `rgba(255,${Math.floor(60-boom*60)},0,${1-boom})`;
-      // Explosion circle
-      ctx.strokeStyle = `rgba(255,100,0,${0.6-boom*0.6})`;
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(ex, py, 10+boom*40, 0, Math.PI*2); ctx.stroke();
-      ctx.lineWidth = 1;
-    }
-    ctx.beginPath(); ctx.arc(ex, py, 10, 0, Math.PI*2); ctx.fill();
-  }
-
-  requestAnimationFrame(drawBeh);
+function s4Remove(id) {
+  s4Items = s4Items.filter(function(x){return x.id !== id});
+  var el = document.getElementById(id);
+  if (el) el.remove();
+  s4CalcTotal();
 }
-drawBeh();
 
-// ===== Growth demo =====
-let growChar = 'warrior';
-function growShow(id, btn) {
-  btn.parentElement.querySelectorAll('.bb').forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
-  growChar = id;
-  growUpdate();
-}
-function growUpdate() {
-  const level = parseInt(document.getElementById('grow-level').value);
-  document.getElementById('grow-level-val').textContent = 'Lv' + level;
+function s4CalcTotal() {
+  var vals = {};
+  for (var k in s4Defs) vals[k] = s4Defs[k].base;
 
-  const c = charDefs[growChar];
-  let might = c.might, cooldown = c.cooldown, area = c.area, amount = c.amount;
-
-  for (const g of c.growth) {
-    const times = Math.floor(level / g.every);
-    if (g.stat === 'might') might += g.amount * times;
-    else if (g.stat === 'cooldown') cooldown += g.amount * times;
-    else if (g.stat === 'area') area += g.amount * times;
-    else if (g.stat === 'amount') amount += g.amount * times;
+  for (var i = 0; i < s4Items.length; i++) {
+    vals[s4Items[i].stat] += s4Items[i].delta;
   }
-  cooldown = Math.max(0.3, cooldown);
+  if (vals.cd < 0.3) vals.cd = 0.3;
 
-  const stats = [
-    { name:'might', val:might, base:c.might, max:2.5, color:'var(--red)', fmt:v=>'×'+v.toFixed(2) },
-    { name:'cooldown', val:cooldown, base:c.cooldown, max:1.2, color:'var(--orange)', fmt:v=>'×'+v.toFixed(2) },
-    { name:'area', val:area, base:c.area, max:2.0, color:'var(--cyan)', fmt:v=>'×'+v.toFixed(2) },
-    { name:'amount', val:amount, base:c.amount, max:5, color:'var(--purple)', fmt:v=>'+'+v },
-  ];
-
-  let sh = '';
-  for (const s of stats) {
-    const changed = s.val !== s.base;
-    sh += `<div class="stat-row">
-      <div class="stat-name" style="${changed?'color:'+s.color+';font-weight:600':''}">${s.name}</div>
-      <div class="stat-bar-bg"><div class="stat-bar" style="width:${Math.min(100,(s.val/s.max)*100)}%; background:${s.color};"></div></div>
-      <div class="stat-val" style="color:${changed?s.color:'var(--text2)'}">${s.fmt(s.val)}</div>
-    </div>`;
+  var order = ['hp','might','cd','area','amount','speed'];
+  var html = '';
+  for (var j = 0; j < order.length; j++) {
+    var k2 = order[j];
+    var d = s4Defs[k2];
+    var changed = vals[k2] !== d.base;
+    html += '<div class="s4-stat"><div class="label">' + d.label + '</div><div class="value" style="color:' + (changed ? d.color : 'var(--text2)') + ';">' + d.fmt(vals[k2]) + '</div></div>';
   }
-  document.getElementById('grow-stats').innerHTML = sh;
-
-  // Weapon calc
-  const dmg = Math.round(15 * might);
-  const cd = Math.round(1500 * cooldown);
-  document.getElementById('grow-weapon').innerHTML = `
-    <div style="font-size:13px; color:var(--text2); font-weight:600; margin-bottom:8px;">🗡 Whip 실제 수치 (Lv${level})</div>
-    <div class="flow-row"><span>데미지:</span> <span style="color:var(--red); font-weight:700;">${dmg}</span> <span style="color:var(--text2); font-size:12px;">(기본 15 × ${might.toFixed(2)})</span></div>
-    <div class="flow-row"><span>쿨다운:</span> <span style="color:var(--orange); font-weight:700;">${cd}ms</span> <span style="color:var(--text2); font-size:12px;">(기본 1500 × ${cooldown.toFixed(2)})</span></div>
-    <div class="flow-row"><span>발사체:</span> <span style="color:var(--purple); font-weight:700;">${1+amount}개</span></div>`;
+  document.getElementById('s4-total').innerHTML = html;
 }
-growUpdate();
+s4CalcTotal();
 
-// ===== Character Builder =====
-const bState = { weapon:'whip', growth:[] };
-function bPick(key, btn) {
-  btn.parentElement.querySelectorAll('.bb').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  bState[key] = btn.dataset.v;
-  bUpdate();
-}
-function bToggleGrowth(btn) {
-  const stat = btn.dataset.stat;
-  const idx = bState.growth.indexOf(stat);
-  if (idx >= 0) { bState.growth.splice(idx,1); btn.classList.remove('sel'); }
-  else { bState.growth.push(stat); btn.classList.add('sel'); }
-  bUpdate();
-}
-function bUpdate() {
-  const name = document.getElementById('b-name').value || 'Custom Hero';
-  const maxHp = parseInt(document.getElementById('b-maxhp').value);
-  const moveSpeed = parseInt(document.getElementById('b-movespeed').value) / 100;
-  const might = parseInt(document.getElementById('b-might').value) / 100;
-  const cooldown = parseInt(document.getElementById('b-cooldown').value) / 100;
-  const area = parseInt(document.getElementById('b-area').value) / 100;
-  const amount = parseInt(document.getElementById('b-amount').value);
+// ===== Section 3: Stat transfer =====
+var s3Weapons = [
+  { name:'🗡 채찍', dmg:15, cd:1500, area:1.0, amount:1 },
+  { name:'⚡ 미사일', dmg:10, cd:1200, area:1.0, amount:1 },
+  { name:'🔥 화염탄', dmg:8, cd:1400, area:1.0, amount:1 },
+  { name:'💧 성수', dmg:5, cd:3000, area:1.5, amount:1 },
+];
+function s3Update() {
+  var might = Number(document.getElementById('s3-might').value) / 100;
+  var cd = Number(document.getElementById('s3-cd').value) / 100;
+  var area = Number(document.getElementById('s3-area').value) / 100;
+  var amount = Number(document.getElementById('s3-amount').value);
 
-  document.getElementById('bv-maxhp').textContent = maxHp;
-  document.getElementById('bv-movespeed').textContent = moveSpeed.toFixed(1);
-  document.getElementById('bv-might').textContent = might.toFixed(2);
-  document.getElementById('bv-cooldown').textContent = cooldown.toFixed(2);
-  document.getElementById('bv-area').textContent = area.toFixed(2);
-  document.getElementById('bv-amount').textContent = '+' + amount;
+  document.getElementById('s3v-might').textContent = 'x' + might.toFixed(2);
+  document.getElementById('s3v-cd').textContent = 'x' + cd.toFixed(2);
+  document.getElementById('s3v-area').textContent = 'x' + area.toFixed(2);
+  document.getElementById('s3v-amount').textContent = '+' + amount;
 
-  let growthStr = '';
-  if (bState.growth.length > 0) {
-    const items = bState.growth.map(s => {
-      if (s === 'might') return `    { <span class="k">stat</span>: <span class="s">'might'</span>, <span class="k">every</span>: <span class="n">1</span>, <span class="k">amount</span>: <span class="n">0.02</span> }`;
-      if (s === 'cooldown') return `    { <span class="k">stat</span>: <span class="s">'cooldown'</span>, <span class="k">every</span>: <span class="n">1</span>, <span class="k">amount</span>: <span class="n">-0.01</span> }`;
-      if (s === 'area') return `    { <span class="k">stat</span>: <span class="s">'area'</span>, <span class="k">every</span>: <span class="n">1</span>, <span class="k">amount</span>: <span class="n">0.02</span> }`;
-      return `    { <span class="k">stat</span>: <span class="s">'amount'</span>, <span class="k">every</span>: <span class="n">20</span>, <span class="k">amount</span>: <span class="n">1</span> }`;
-    });
-    growthStr = `\n\n  <span class="k">growth</span>: [\n${items.join(',\n')}\n  ],`;
+  var html = '';
+  for (var i = 0; i < s3Weapons.length; i++) {
+    var w = s3Weapons[i];
+    var rDmg = Math.round(w.dmg * might);
+    var rCd = Math.round(w.cd * cd);
+    var rArea = (w.area * area).toFixed(1);
+    var rAmount = w.amount + amount;
+    var dmgChanged = might !== 1;
+    var cdChanged = cd !== 1;
+    var areaChanged = area !== 1;
+    var amountChanged = amount > 0;
+
+    html += '<div style="display:flex; align-items:center; gap:8px; padding:6px 0; font-size:13px;'
+      + (i > 0 ? ' border-top:1px solid var(--border);' : '') + '">'
+      + '<div style="width:80px; font-weight:600;">' + w.name + '</div>'
+      + '<div style="flex:1; display:flex; gap:12px; flex-wrap:wrap;">'
+      + '<span>데미지 <strong style="color:' + (dmgChanged ? 'var(--red)' : 'var(--text2)') + ';">' + rDmg + '</strong>'
+      + (dmgChanged ? ' <span style="font-size:10px; color:var(--text2);">(' + w.dmg + '×' + might.toFixed(2) + ')</span>' : '') + '</span>'
+      + '<span>쿨다운 <strong style="color:' + (cdChanged ? 'var(--orange)' : 'var(--text2)') + ';">' + rCd + 'ms</strong>'
+      + (cdChanged ? ' <span style="font-size:10px; color:var(--text2);">(' + w.cd + '×' + cd.toFixed(2) + ')</span>' : '') + '</span>'
+      + '<span>투사체 <strong style="color:' + (amountChanged ? 'var(--purple)' : 'var(--text2)') + ';">' + rAmount + '개</strong>'
+      + (amountChanged ? ' <span style="font-size:10px; color:var(--text2);">(' + w.amount + '+' + amount + ')</span>' : '') + '</span>'
+      + '</div></div>';
   }
-
-  document.getElementById('b-code').innerHTML = `{
-  <span class="k">id</span>: <span class="s">'${name.toLowerCase().replace(/ /g,'_')}'</span>,
-  <span class="k">name</span>: <span class="s">'${name}'</span>,
-
-  <span class="k">stats</span>: {
-    <span class="k">maxHp</span>: <span class="n">${maxHp}</span>, <span class="k">moveSpeed</span>: <span class="n">${moveSpeed.toFixed(1)}</span>, <span class="k">magnet</span>: <span class="n">1.0</span>,
-    <span class="k">might</span>: <span class="n">${might.toFixed(2)}</span>, <span class="k">cooldown</span>: <span class="n">${cooldown.toFixed(2)}</span>, <span class="k">area</span>: <span class="n">${area.toFixed(2)}</span>, <span class="k">amount</span>: <span class="n">${amount}</span>,
-  },
-
-  <span class="k">startingWeapon</span>: <span class="s">'${bState.weapon}'</span>,${growthStr}
-}`;
+  document.getElementById('s3-results').innerHTML = html;
 }
-document.getElementById('b-name').addEventListener('input', bUpdate);
-bUpdate();
+s3Update();
+
+// ===== Section 2: Weapon equip =====
+var s2Selected = 0;
+function s2Select(idx) {
+  document.querySelectorAll('.s2-char').forEach(function(el,i) {
+    el.classList.toggle('selected', i === idx);
+  });
+  s2Selected = idx;
+}
+function s2Equip(name) {
+  var slots = document.getElementById('s2-slots-' + s2Selected);
+  var item = document.createElement('div');
+  item.className = 's2-equipped';
+  var id = 's2eq' + Date.now();
+  item.id = id;
+  item.innerHTML = '<span>' + name + '</span><span class="rm" onclick="document.getElementById(\'' + id + '\').remove()">&times;</span>';
+  slots.appendChild(item);
+}
+
 </script>
 </body>
 </html>
